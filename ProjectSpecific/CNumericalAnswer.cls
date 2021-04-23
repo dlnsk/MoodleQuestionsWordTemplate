@@ -36,11 +36,11 @@ Public Property Let Fraction(ByVal NewValue As Double)
     pFraction = NewValue
 End Property
 
-Public Property Get answer() As Variant
-    answer = pAnswer
+Public Property Get Answer() As Variant
+    Answer = pAnswer
 End Property
 
-Public Property Let answer(ByVal NewValue As Variant)
+Public Property Let Answer(ByVal NewValue As Variant)
     pAnswer = NewValue
 End Property
 

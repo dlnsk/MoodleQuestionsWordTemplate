@@ -32,11 +32,11 @@ Public Property Let Subquestion(ByVal NewValue As CHTML)
     Set pSubquestion = NewValue
 End Property
 
-Public Property Get answer() As String
-    answer = pAnswer
+Public Property Get Answer() As String
+    Answer = pAnswer
 End Property
 
-Public Property Let answer(ByVal NewValue As String)
+Public Property Let Answer(ByVal NewValue As String)
     pAnswer = NewValue
 End Property
 

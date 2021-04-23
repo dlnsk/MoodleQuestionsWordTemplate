@@ -34,11 +34,11 @@ Public Property Let Subquestion(ByVal NewValue As CHTML)
     Set pSubquestion = NewValue
 End Property
 
-Public Property Get answer() As CHTML
-    Set answer = pAnswer
+Public Property Get Answer() As CHTML
+    Set Answer = pAnswer
 End Property
 
-Public Property Set answer(ByVal NewValue As CHTML)
+Public Property Set Answer(ByVal NewValue As CHTML)
     Set pAnswer = NewValue
 End Property
 
@@ -51,10 +51,10 @@ Public Sub Export(ByRef QuestionElement As MSXML2.IXMLDOMElement)
     ' if DDMatch answer contains picture we should also invisibilly save files hash, so that same pictures with same name look as same answer and different pictures with same name look as different answers
     If pAnswer.Files.Count > 0 Then
         MD5 = pAnswer.Files.GetMD5
-        AnswerText = answer.Text
-        answer.Text = answer.Text & "<!--" & MD5 & "-->"
+        AnswerText = Answer.Text
+        Answer.Text = Answer.Text & "<!--" & MD5 & "-->"
         pAnswer.Export XMLSubquestionElement, "answer"
-        answer.Text = AnswerText
+        Answer.Text = AnswerText
     Else
         pAnswer.Export XMLSubquestionElement, "answer"
     End If

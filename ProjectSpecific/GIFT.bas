@@ -163,17 +163,17 @@ Public Type TParseText
     Name As String
     Shuffleanswers As Boolean
     Defaultgrade As Double
-    File As Boolean 'для эссе
+    file As Boolean 'для эссе
 End Type
 
 Public Type TNumericalAnswer
-    answer As Variant
+    Answer As Variant
     Tolerance As Double
     Fraction As Double
 End Type
 
 Public Type TMultichoiceAnswer
-    answer As CHTML
+    Answer As CHTML
     Fraction As Double
     Singleanswer As Boolean
 End Type
@@ -185,7 +185,7 @@ End Type
 
 Public Type TMatchingSubquestion
     Subquestion As CHTML
-    answer As String
+    Answer As String
 End Type
 
 Dim paraStyles() As TParaType
@@ -1807,42 +1807,42 @@ Dim ncut As String
                 If TFAnswer = 0 Then
                     If LastStyle = STYLE_TRUESTATEMENT Then
                         Set AMultichoice = New CMultichoiceAnswer
-                        AMultichoice.answer.Text = "true"
+                        AMultichoice.Answer.Text = "true"
                         AMultichoice.Fraction = 100
                         QTrueFalse.Answers.Add AMultichoice
                         Set AMultichoice = New CMultichoiceAnswer
-                        AMultichoice.answer.Text = "false"
+                        AMultichoice.Answer.Text = "false"
                         AMultichoice.Fraction = 0
                         QTrueFalse.Answers.Add AMultichoice
                     ElseIf LastStyle = STYLE_FALSESTATEMENT Then
                         Set AMultichoice = New CMultichoiceAnswer
-                        AMultichoice.answer.Text = "true"
+                        AMultichoice.Answer.Text = "true"
                         AMultichoice.Fraction = 0
                         QTrueFalse.Answers.Add AMultichoice
                         Set AMultichoice = New CMultichoiceAnswer
-                        AMultichoice.answer.Text = "false"
+                        AMultichoice.Answer.Text = "false"
                         AMultichoice.Fraction = 100
                         QTrueFalse.Answers.Add AMultichoice
                     End If
                 ElseIf TFAnswer = 1 Then
                     Set AMultichoice = New CMultichoiceAnswer
                     If LastStyle = STYLE_TRUESTATEMENT Then
-                        AMultichoice.answer.Text = "false"
+                        AMultichoice.Answer.Text = "false"
                         AMultichoice.Fraction = 0
                         QTrueFalse.Answers.Add AMultichoice
                     ElseIf LastStyle = STYLE_FALSESTATEMENT Then
-                        AMultichoice.answer.Text = "false"
+                        AMultichoice.Answer.Text = "false"
                         AMultichoice.Fraction = 100
                         QTrueFalse.Answers.Add AMultichoice
                     End If
                 ElseIf TFAnswer = 2 Then
                     Set AMultichoice = New CMultichoiceAnswer
                     If LastStyle = STYLE_TRUESTATEMENT Then
-                        AMultichoice.answer.Text = "true"
+                        AMultichoice.Answer.Text = "true"
                         AMultichoice.Fraction = 100
                         QTrueFalse.Answers.Add AMultichoice
                     ElseIf LastStyle = STYLE_FALSESTATEMENT Then
-                        AMultichoice.answer.Text = "true"
+                        AMultichoice.Answer.Text = "true"
                         AMultichoice.Fraction = 0
                         QTrueFalse.Answers.Add AMultichoice
                     End If
@@ -1978,7 +1978,7 @@ Dim ncut As String
                     QEssay.Name = TXT.Name
                     QEssay.QuestionText.Text = "<p>" + TXT.Text + "</p>"
                     QEssay.Defaultgrade = TXT.Defaultgrade
-                    If TXT.File = True Then QEssay.Attachments = 1
+                    If TXT.file = True Then QEssay.Attachments = 1
                     'Questions.Add QEssay
                 End If
             '===Конец Эссе===
@@ -2142,7 +2142,7 @@ Dim ncut As String
                         AnswEnd = True
                         Set ANumerical = New CNumericalAnswer
                         Answ = ParseNumericalAnswer(.Para.Range)
-                        ANumerical.answer = Answ.answer
+                        ANumerical.Answer = Answ.Answer
                         ANumerical.Tolerance = Answ.Tolerance
                         ANumerical.Fraction = Answ.Fraction
                     End If
@@ -2151,7 +2151,7 @@ Dim ncut As String
                         AnswEnd = True
                         Set AMultichoice = New CMultichoiceAnswer
                         AnswM = ParseMultichoiceAnswer(.Para.Range)
-                        Set AMultichoice.answer = AnswM.answer
+                        Set AMultichoice.Answer = AnswM.Answer
                         AMultichoice.Fraction = AnswM.Fraction
                         If QMultichoice.Singleanswer = True And AnswM.Singleanswer = False Then
                             QMultichoice.Singleanswer = False
@@ -2165,7 +2165,7 @@ Dim ncut As String
                         If AnswEnd = True Then QNumerical.Answers.Add ANumerical
                         AnswEnd = True
                         Set ANumerical = New CNumericalAnswer
-                        ANumerical.answer = "*"
+                        ANumerical.Answer = "*"
                         ANumerical.Fraction = 0
                     End If
                     If LastStyle = STYLE_MULTIPLECHOICEQ Then
@@ -2173,7 +2173,7 @@ Dim ncut As String
                         AnswEnd = True
                         Set AMultichoice = New CMultichoiceAnswer
                         AnswM = ParseMultichoiceAnswer("~" + .Para.Range)
-                        Set AMultichoice.answer = AnswM.answer
+                        Set AMultichoice.Answer = AnswM.Answer
                         AMultichoice.Fraction = AnswM.Fraction
                         If QMultichoice.Singleanswer = True And AnswM.Singleanswer = False Then
                             QMultichoice.Singleanswer = False
@@ -2215,7 +2215,7 @@ Dim ncut As String
                         AnswEnd = True
                         Set ANumerical = New CNumericalAnswer
                         Answ = ParseNumericalAnswer(.Para.Range)
-                        ANumerical.answer = Answ.answer
+                        ANumerical.Answer = Answ.Answer
                         ANumerical.Tolerance = Answ.Tolerance
                         ANumerical.Fraction = Answ.Fraction
                     End If
@@ -2224,7 +2224,7 @@ Dim ncut As String
                         AnswEnd = True
                         Set AMultichoice = New CMultichoiceAnswer
                         AnswM = ParseMultichoiceAnswer("=" + .Para.Range)
-                        Set AMultichoice.answer = AnswM.answer
+                        Set AMultichoice.Answer = AnswM.Answer
                         AMultichoice.Fraction = AnswM.Fraction
                         If QMultichoice.Singleanswer = True And AnswM.Singleanswer = False Then
                             QMultichoice.Singleanswer = False
@@ -2267,7 +2267,7 @@ Dim ncut As String
                 ElseIf .StyleName = STYLE_RIGHT_PAIR Then
                     If LastStyle = STYLE_MATCHINGQ Then 'XML
                         AnswMS = ParseMatchingSubquestion("", .Para.Range)
-                        AMatching.answer = AnswMS.answer
+                        AMatching.Answer = AnswMS.Answer
                         QMatching.Subquestions.Add AMatching
                         AnswEnd = False
                     End If
@@ -2300,11 +2300,11 @@ Dim ncut As String
                         If LastStyleQ = STYLE_RIGHT_ANSWER Then
                             Set AMultichoice = New CMultichoiceAnswer
                             If LastStyle = STYLE_TRUESTATEMENT Then
-                                AMultichoice.answer.Text = "true"
+                                AMultichoice.Answer.Text = "true"
                                 AMultichoice.Fraction = 100
                                 TFAnswer = TFAnswer + 1
                             Else
-                                AMultichoice.answer.Text = "false"
+                                AMultichoice.Answer.Text = "false"
                                 AMultichoice.Fraction = 0
                                 TFAnswer = TFAnswer + 2
                             End If
@@ -2312,11 +2312,11 @@ Dim ncut As String
                         ElseIf LastStyleQ = STYLE_WRONG_ANSWER Then
                             Set AMultichoice = New CMultichoiceAnswer
                             If LastStyle = STYLE_TRUESTATEMENT Then
-                                AMultichoice.answer.Text = "false"
+                                AMultichoice.Answer.Text = "false"
                                 AMultichoice.Fraction = 0
                                 TFAnswer = TFAnswer + 2
                             Else
-                                AMultichoice.answer.Text = "true"
+                                AMultichoice.Answer.Text = "true"
                                 AMultichoice.Fraction = 100
                                 TFAnswer = TFAnswer + 1
                             End If
@@ -2352,42 +2352,42 @@ Dim ncut As String
         If TFQuestion = 0 Then
             If LastStyle = STYLE_TRUESTATEMENT Then
                 Set AMultichoice = New CMultichoiceAnswer
-                AMultichoice.answer.Text = "true"
+                AMultichoice.Answer.Text = "true"
                 AMultichoice.Fraction = 100
                 QTrueFalse.Answers.Add AMultichoice
                 Set AMultichoice = New CMultichoiceAnswer
-                AMultichoice.answer.Text = "false"
+                AMultichoice.Answer.Text = "false"
                 AMultichoice.Fraction = 0
                 QTrueFalse.Answers.Add AMultichoice
             ElseIf LastStyle = STYLE_FALSESTATEMENT Then
                 Set AMultichoice = New CMultichoiceAnswer
-                AMultichoice.answer.Text = "true"
+                AMultichoice.Answer.Text = "true"
                 AMultichoice.Fraction = 0
                 QTrueFalse.Answers.Add AMultichoice
                 Set AMultichoice = New CMultichoiceAnswer
-                AMultichoice.answer.Text = "false"
+                AMultichoice.Answer.Text = "false"
                 AMultichoice.Fraction = 100
                 QTrueFalse.Answers.Add AMultichoice
             End If
         ElseIf TFQuestion = 1 Then
             Set AMultichoice = New CMultichoiceAnswer
             If LastStyle = STYLE_TRUESTATEMENT Then
-                AMultichoice.answer.Text = "false"
+                AMultichoice.Answer.Text = "false"
                 AMultichoice.Fraction = 0
                 QTrueFalse.Answers.Add AMultichoice
             ElseIf LastStyle = STYLE_FALSESTATEMENT Then
-                AMultichoice.answer.Text = "false"
+                AMultichoice.Answer.Text = "false"
                 AMultichoice.Fraction = 100
                 QTrueFalse.Answers.Add AMultichoice
             End If
         ElseIf TFQuestion = 2 Then
             Set AMultichoice = New CMultichoiceAnswer
             If LastStyle = STYLE_TRUESTATEMENT Then
-                AMultichoice.answer.Text = "true"
+                AMultichoice.Answer.Text = "true"
                 AMultichoice.Fraction = 100
                 QTrueFalse.Answers.Add AMultichoice
             ElseIf LastStyle = STYLE_FALSESTATEMENT Then
-                AMultichoice.answer.Text = "true"
+                AMultichoice.Answer.Text = "true"
                 AMultichoice.Fraction = 0
                 QTrueFalse.Answers.Add AMultichoice
             End If
@@ -2453,7 +2453,7 @@ Private Function ParseText(Text) As TParseText
     
     TXT.Defaultgrade = 1
     TXT.Shuffleanswers = True
-    TXT.File = False
+    TXT.file = False
     
     'Text = Trim(Text)
     'Text = Replace(Text, "\\", "&&&slesh&&&")
@@ -2467,7 +2467,7 @@ Private Function ParseText(Text) As TParseText
         TXT.Shuffleanswers = True
         Text = Replace(Text, "[shuffle]", "")
     ElseIf InStr(1, Text, "[file]", vbTextCompare) > 0 Then
-        TXT.File = True
+        TXT.file = True
         Text = Replace(Text, "[file]", "")
     End If
     'Поиск веса вопроса
@@ -2527,14 +2527,14 @@ Private Function ParseNumericalAnswer(Text) As TNumericalAnswer
         If InStr(InStr(3, Text, "%", vbTextCompare) + 1, Text, ":", vbTextCompare) > 0 Then
             'MsgBox Mid(text, InStr(3, text, "%", vbTextCompare) + 1, InStr(InStr(3, text, "%", vbTextCompare) + 1, text, ":", vbTextCompare) - InStr(3, text, "%", vbTextCompare) - 1)
             'MsgBox Right(text, Len(text) - InStr(InStr(3, text, "%", vbTextCompare) + 1, text, ":", vbTextCompare))
-            NumericalAnswer.answer = CVar(Mid(Text, InStr(3, Text, "%", vbTextCompare) + 1, InStr(InStr(3, Text, "%", vbTextCompare) + 1, Text, ":", vbTextCompare) - InStr(3, Text, "%", vbTextCompare) - 1))
+            NumericalAnswer.Answer = CVar(Mid(Text, InStr(3, Text, "%", vbTextCompare) + 1, InStr(InStr(3, Text, "%", vbTextCompare) + 1, Text, ":", vbTextCompare) - InStr(3, Text, "%", vbTextCompare) - 1))
             NumericalAnswer.Tolerance = CDbl(right(Text, Len(Text) - InStr(InStr(3, Text, "%", vbTextCompare) + 1, Text, ":", vbTextCompare)))
         Else
             'MsgBox Right(text, Len(text) - InStr(3, text, "%", vbTextCompare))
-            NumericalAnswer.answer = CVar(right(Text, Len(Text) - InStr(3, Text, "%", vbTextCompare)))
+            NumericalAnswer.Answer = CVar(right(Text, Len(Text) - InStr(3, Text, "%", vbTextCompare)))
         End If
     Else
-        NumericalAnswer.answer = CVar(Text)
+        NumericalAnswer.Answer = CVar(Text)
     End If
     
     ParseNumericalAnswer = NumericalAnswer
@@ -2556,14 +2556,14 @@ Private Function ParseMultichoiceAnswer(Text) As TMultichoiceAnswer
         'MsgBox Mid(text, 3, InStr(3, text, "%", vbTextCompare) - 3)
         MultichoiceAnswer.Fraction = CDbl(Mid(Text, 3, InStr(3, Text, "%", vbTextCompare) - 3))
         'MsgBox Right(text, Len(text) - InStr(3, text, "%", vbTextCompare))
-        Set MultichoiceAnswer.answer = GetCHTML(right(Text, Len(Text) - InStr(3, Text, "%", vbTextCompare)))
+        Set MultichoiceAnswer.Answer = GetCHTML(right(Text, Len(Text) - InStr(3, Text, "%", vbTextCompare)))
         MultichoiceAnswer.Singleanswer = False
     ElseIf InStr(1, Text, "=", vbTextCompare) = 1 Then
-        Set MultichoiceAnswer.answer = GetCHTML(right(Text, Len(Text) - 1))
+        Set MultichoiceAnswer.Answer = GetCHTML(right(Text, Len(Text) - 1))
         MultichoiceAnswer.Fraction = 100
         MultichoiceAnswer.Singleanswer = True
     ElseIf InStr(1, Text, "~", vbTextCompare) = 1 Then
-        Set MultichoiceAnswer.answer = GetCHTML(right(Text, Len(Text) - 1))
+        Set MultichoiceAnswer.Answer = GetCHTML(right(Text, Len(Text) - 1))
         MultichoiceAnswer.Fraction = 0
         MultichoiceAnswer.Singleanswer = True
     End If
@@ -2598,7 +2598,7 @@ End Function
 
 
 
-Private Function ParseMatchingSubquestion(Question, answer) As TMatchingSubquestion
+Private Function ParseMatchingSubquestion(Question, Answer) As TMatchingSubquestion
     Dim MatchingSubquestion As TMatchingSubquestion
 
 
@@ -2610,13 +2610,13 @@ Private Function ParseMatchingSubquestion(Question, answer) As TMatchingSubquest
         Set MatchingSubquestion.Subquestion = New CHTML
     End If
     'Обработка ответа
-    If Len(answer) > 0 Then answer = Left(answer, Len(answer) - 1) 'Убираем абзац
-    answer = Trim(answer)
-    answer = Replace(answer, "\\", "&&&slesh&&&")
-    answer = Replace(answer, "\", "")
-    answer = Replace(answer, "&&&slesh&&&", "\")
+    If Len(Answer) > 0 Then Answer = Left(Answer, Len(Answer) - 1) 'Убираем абзац
+    Answer = Trim(Answer)
+    Answer = Replace(Answer, "\\", "&&&slesh&&&")
+    Answer = Replace(Answer, "\", "")
+    Answer = Replace(Answer, "&&&slesh&&&", "\")
     
-    MatchingSubquestion.answer = answer
+    MatchingSubquestion.Answer = Answer
 
     ParseMatchingSubquestion = MatchingSubquestion
 End Function

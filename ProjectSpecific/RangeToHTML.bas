@@ -80,19 +80,19 @@ End Function
 Private Function GetPictures(Dirname As String) As CFilesCollection
     Dim FSO As Object
     Dim Folder As Object
-    Dim File As Object
+    Dim file As Object
     Dim FileContent As String
      
     Set FSO = CreateObject("Scripting.FileSystemObject")
     Set GetPictures = New CFilesCollection
     If FSO.FolderExists(Dirname) Then
         Set Folder = FSO.GetFolder(Dirname)
-        For Each File In Folder.Files
-            GetPictures.Add Base64.Base64Encode(ReadFileByte(Dirname & "\" & File.Name)), File.Name
+        For Each file In Folder.Files
+            GetPictures.Add Base64.Base64Encode(ReadFileByte(Dirname & "\" & file.Name)), file.Name
         Next
     End If
     Set Folder = Nothing
-    Set File = Nothing
+    Set file = Nothing
     Set FSO = Nothing
 End Function
 

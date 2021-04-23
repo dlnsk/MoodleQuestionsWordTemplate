@@ -195,7 +195,7 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLElement2 As IXMLDOMElement
     Dim XMLText As IXMLDOMText
     Dim XMLAttr As IXMLDOMAttribute
-    Dim answer As CMultichoiceAnswer
+    Dim Answer As CMultichoiceAnswer
     Dim Hint As CHint
     
     Set XMLRootElement = DOM.DocumentElement
@@ -281,9 +281,9 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
         XMLQuestionElement.appendChild XMLElement1
     End If
     
-    For Each answer In pAnswers
-        answer.Export XMLQuestionElement
-    Next answer
+    For Each Answer In pAnswers
+        Answer.Export XMLQuestionElement
+    Next Answer
     
     For Each Hint In pHints
         Hint.Export XMLQuestionElement

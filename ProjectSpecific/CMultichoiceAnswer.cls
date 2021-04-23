@@ -36,11 +36,11 @@ Public Property Let Fraction(ByVal NewValue As Double)
     pFraction = NewValue
 End Property
 
-Public Property Get answer() As CHTML
-    Set answer = pAnswer
+Public Property Get Answer() As CHTML
+    Set Answer = pAnswer
 End Property
 
-Public Property Set answer(ByVal NewValue As CHTML)
+Public Property Set Answer(ByVal NewValue As CHTML)
     Set pAnswer = NewValue
 End Property
 

@@ -213,7 +213,7 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLText As IXMLDOMText
     Dim XMLAttr As IXMLDOMAttribute
     Dim Unit As CNumericalUnit
-    Dim answer As CNumericalAnswer
+    Dim Answer As CNumericalAnswer
     Dim Hint As CShortanswerHint
     
     Set XMLRootElement = DOM.DocumentElement
@@ -280,9 +280,9 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
         Unit.Export XMLElement1
     Next Unit
     
-    For Each answer In pAnswers
-        answer.Export XMLQuestionElement
-    Next answer
+    For Each Answer In pAnswers
+        Answer.Export XMLQuestionElement
+    Next Answer
     
     For Each Hint In pHints
         Hint.Export XMLQuestionElement
