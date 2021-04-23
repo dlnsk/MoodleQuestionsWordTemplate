@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' Class representing moodle question category
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -50,4 +50,8 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     
     Set XMLText = DOM.createTextNode(pCategoryName)
     XMLTextElement.appendChild XMLText
+End Sub
+
+Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+    pCategoryName = Element.SelectSingleNode("category/text/text()").NodeValue
 End Sub

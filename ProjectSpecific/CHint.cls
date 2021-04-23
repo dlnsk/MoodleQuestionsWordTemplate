@@ -7,8 +7,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-' Class representing hint in most of moodle questions (multichoice, matching ddmatch, ordering)
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Class representing hint in most of moodle questions (multichoice, matching, ddmatch, ordering)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -75,3 +75,19 @@ Public Sub Export(ByRef QuestionElement As MSXML2.IXMLDOMElement)
     End If
 End Sub
 
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Set pHint = New CHTML
+    pHint.Import Element
+    
+    If Not Element.SelectSingleNode("shownumcorrect") Is Nothing Then
+        pShownumcorrect = True
+    Else
+        pShownumcorrect = False
+    End If
+    
+    If Not Element.SelectSingleNode("clearwrong") Is Nothing Then
+        pClearwrong = True
+    Else
+        pClearwrong = False
+    End If
+End Sub

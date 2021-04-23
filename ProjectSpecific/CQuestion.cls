@@ -16,3 +16,9 @@ Option Explicit
 Public Sub Export(ByRef DOM As MSXML2.DOMDocument60)
 
 End Sub
+
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+
+End Sub
+
+

@@ -15,7 +15,7 @@ Option Explicit
 
 Implements CQuestion
 
-Public Enum MultichoinceAnswernumberingOptions
+Public Enum MultichoiceAnswernumberingOptions
     numbering_abc
     numbering_ABCD
     numbering_123
@@ -49,7 +49,7 @@ Private Sub Class_Initialize()
     pHidden = False
     pSingleanswer = True
     pShuffleanswers = True
-    pAnswernumbering = MultichoinceAnswernumberingOptions.numbering_abc
+    pAnswernumbering = MultichoiceAnswernumberingOptions.numbering_abc
     Set pCorrectfeedback = New CHTML
     Set pPartiallycorrectfeedback = New CHTML
     Set pIncorrectfeedback = New CHTML
@@ -257,17 +257,17 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Set XMLElement1 = DOM.createElement("answernumbering")
     XMLQuestionElement.appendChild XMLElement1
     Select Case pAnswernumbering
-        Case MultichoinceAnswernumberingOptions.numbering_123
+        Case MultichoiceAnswernumberingOptions.numbering_123
             Set XMLText = DOM.createTextNode("123")
-        Case MultichoinceAnswernumberingOptions.numbering_abc
+        Case MultichoiceAnswernumberingOptions.numbering_abc
             Set XMLText = DOM.createTextNode("abc")
-        Case MultichoinceAnswernumberingOptions.numbering_ABCD
+        Case MultichoiceAnswernumberingOptions.numbering_ABCD
             Set XMLText = DOM.createTextNode("ABCD")
-        Case MultichoinceAnswernumberingOptions.numbering_iii
+        Case MultichoiceAnswernumberingOptions.numbering_iii
             Set XMLText = DOM.createTextNode("iii")
-        Case MultichoinceAnswernumberingOptions.numbering_IIII
+        Case MultichoiceAnswernumberingOptions.numbering_IIII
             Set XMLText = DOM.createTextNode("IIII")
-        Case MultichoinceAnswernumberingOptions.numbering_none
+        Case MultichoiceAnswernumberingOptions.numbering_none
             Set XMLText = DOM.createTextNode("none")
     End Select
     XMLElement1.appendChild XMLText
@@ -288,5 +288,92 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     For Each Hint In pHints
         Hint.Export XMLQuestionElement
     Next Hint
+End Sub
+
+Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Nodes As MSXML2.IXMLDOMNodeList
+    Dim Node As MSXML2.IXMLDOMNode
+    Dim Answer As CMultichoiceAnswer
+    Dim Hint As CHint
+    Dim Separator As String
+    Separator = Replace(Format(0, "0.0"), "0", "")
+    
+    pName = Element.SelectSingleNode("name/text/text()").NodeValue
+    
+    Set pQuestiontext = New CHTML
+    pQuestiontext.Import Element.SelectSingleNode("questiontext")
+    
+    Set pGeneralfeedback = New CHTML
+    pGeneralfeedback.Import Element.SelectSingleNode("generalfeedback")
+    
+    pDefaultgrade = CDbl(Replace(Element.SelectSingleNode("defaultgrade/text()").NodeValue, ".", Separator))
+    
+    pPenalty = CDbl(Replace(Element.SelectSingleNode("penalty/text()").NodeValue, ".", Separator))
+    
+    If Element.SelectSingleNode("hidden/text()").NodeValue = "1" Then
+        pHidden = True
+    Else
+        pHidden = False
+    End If
+    
+    If Element.SelectSingleNode("single/text()").NodeValue = "true" Then
+        pSingleanswer = True
+    Else
+        pSingleanswer = False
+    End If
+    
+    If Element.SelectSingleNode("shuffleanswers/text()").NodeValue = "true" Then
+        pShuffleanswers = True
+    Else
+        pShuffleanswers = False
+    End If
+    
+    Select Case Element.SelectSingleNode("answernumbering/text()").NodeValue
+        Case "123"
+            pAnswernumbering = MultichoiceAnswernumberingOptions.numbering_123
+        Case "abc"
+            pAnswernumbering = MultichoiceAnswernumberingOptions.numbering_abc
+        Case "ABCD"
+            pAnswernumbering = MultichoiceAnswernumberingOptions.numbering_ABCD
+        Case "iii"
+            pAnswernumbering = MultichoiceAnswernumberingOptions.numbering_iii
+        Case "IIII"
+            pAnswernumbering = MultichoiceAnswernumberingOptions.numbering_IIII
+        Case "none"
+            pAnswernumbering = MultichoiceAnswernumberingOptions.numbering_none
+        Case Else
+            Err.Raise vbObjectError + 512 + 1, "CMultichoice", "Unknown answernumbering value"
+    End Select
+    
+    Set pCorrectfeedback = New CHTML
+    pCorrectfeedback.Import Element.SelectSingleNode("correctfeedback")
+    
+    Set pPartiallycorrectfeedback = New CHTML
+    pPartiallycorrectfeedback.Import Element.SelectSingleNode("partiallycorrectfeedback")
+    
+    Set pIncorrectfeedback = New CHTML
+    pIncorrectfeedback.Import Element.SelectSingleNode("incorrectfeedback")
+    
+    If Not Element.SelectSingleNode("shownumcorrect") Is Nothing Then
+        pShownumcorrect = True
+    Else
+        pShownumcorrect = False
+    End If
+    
+    Set pAnswers = New Collection
+    Set Nodes = Element.SelectNodes("answer")
+    For Each Node In Nodes
+        Set Answer = New CMultichoiceAnswer
+        Answer.Import Node
+        pAnswers.Add Answer
+    Next
+
+    Set pHints = New Collection
+    Set Nodes = Element.SelectNodes("hint")
+    For Each Node In Nodes
+        Set Hint = New CHint
+        Hint.Import Node
+        pHints.Add Hint
+    Next
 End Sub
 

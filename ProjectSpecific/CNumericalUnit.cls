@@ -54,3 +54,14 @@ Public Sub Export(ByRef UnitsElement As MSXML2.IXMLDOMElement)
     XMLElement2.appendChild XMLText
 End Sub
 
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Separator As String
+    Separator = Replace(Format(0, "0.0"), "0", "")
+    
+    pMultiplier = CDbl(Replace(Element.SelectSingleNode("multiplier/text()").NodeValue, ".", Separator))
+    
+    pName = Element.SelectSingleNode("unit_name/text()").NodeValue
+End Sub
+
+
+

@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' Class representing answer of moodle multichoice question
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -44,11 +44,11 @@ Public Property Set Answer(ByVal NewValue As CHTML)
     Set pAnswer = NewValue
 End Property
 
-Public Property Get feedback() As CHTML
-    Set feedback = pFeedback
+Public Property Get Feedback() As CHTML
+    Set Feedback = pFeedback
 End Property
 
-Public Property Let feedback(ByVal NewValue As CHTML)
+Public Property Let Feedback(ByVal NewValue As CHTML)
     Set pFeedback = NewValue
 End Property
 
@@ -66,3 +66,17 @@ Public Sub Export(ByRef QuestionElement As MSXML2.IXMLDOMElement)
     
     pFeedback.Export XMLAnswerElement, "feedback"
 End Sub
+
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Separator As String
+    Separator = Replace(Format(0, "0.0"), "0", "")
+    
+    pFraction = CDbl(Replace(Element.SelectSingleNode("@fraction").NodeValue, ".", Separator))
+    
+    Set pAnswer = New CHTML
+    pAnswer.Import Element
+    
+    Set pFeedback = New CHTML
+    pFeedback.Import Element.SelectSingleNode("feedback")
+End Sub
+

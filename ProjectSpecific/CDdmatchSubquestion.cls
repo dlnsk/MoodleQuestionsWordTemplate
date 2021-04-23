@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' Class representing subquestion of moodle drag-n-drop matching question
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -60,3 +60,20 @@ Public Sub Export(ByRef QuestionElement As MSXML2.IXMLDOMElement)
     End If
 End Sub
 
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim RegExp As Object
+    
+    Set pSubquestion = New CHTML
+    pSubquestion.Import Element
+    
+    Set pAnswer = New CHTML
+    pAnswer.Import Element.SelectSingleNode("answer")
+    
+    If pAnswer.Files.Count > 0 Then
+        Set RegExp = CreateObject("VBScript.RegExp")
+        RegExp.Global = True
+        RegExp.MultiLine = True
+        RegExp.Pattern = "<!--[0123456789ABCDEF]{32}-->$"
+        pAnswer.Text = RegExp.Replace(pAnswer.Text, "")
+    End If
+End Sub

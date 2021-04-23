@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 ' Class representing list of base64 encoded files.
 ' Is used instead of simple Collection, because it is not efficent to extract keys in foreach loops
 ' It also calculates MD5 hash of files, it's needed for DDMatch Subquestion export
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -33,6 +33,14 @@ Public Sub Add(Data As String, Filename As String)
     pFilenames.Add Filename
 End Sub
 
+Public Function file(Index) As String
+    file = pFiles.Item(Index)
+End Function
+
+Public Function Filename(Index) As String
+    Filename = pFilenames.Item(Index)
+End Function
+
 Public Function Count() As Long
     Count = pFilenames.Count
 End Function
@@ -53,6 +61,7 @@ Public Function GetMD5() As String
     Set Filenames = Nothing
     Set Files = Nothing
 End Function
+
 Private Sub GetSortedCollections(Filenames As Collection, Files As Collection)
     Dim I As Long
     
@@ -88,7 +97,7 @@ Private Sub QuickSort(Filenames As Collection, Files As Collection, Lo As Long, 
                 TempFilename = Filenames.Item("key" & TempLow)
                 TempFiledata = Files.Item("key" & TempLow)
                 ' We cannot replace collection element directly, so we delete element and then create element with same key.
-                ' This does not works with numbers, becouse in this case collection are automatically reordered, so we use string keys.
+                ' This does not works with numbers, because in this case collection are automatically reordered, so we use string keys.
                 Filenames.Remove "key" & TempLow
                 Filenames.Add Filenames.Item("key" & TempHi), "key" & TempLow
                 Files.Remove "key" & TempLow
@@ -120,10 +129,29 @@ Public Sub Export(ByRef ParentElement As MSXML2.IXMLDOMElement)
         Set XMLAttr = DOM.createAttribute("name")
         XMLAttr.NodeValue = pFilenames.Item(I)
         XMLElement.setAttributeNode XMLAttr
+        Set XMLAttr = DOM.createAttribute("path")
+        XMLAttr.NodeValue = "/"
+        XMLElement.setAttributeNode XMLAttr
         Set XMLAttr = DOM.createAttribute("encoding")
         XMLAttr.NodeValue = "base64"
         XMLElement.setAttributeNode XMLAttr
         Set XMLText = DOM.createTextNode(pFiles.Item(I))
         XMLElement.appendChild XMLText
     Next I
+End Sub
+
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Nodes As MSXML2.IXMLDOMNodeList
+    Dim Node As MSXML2.IXMLDOMNode
+    Dim Filedata As String
+    Dim Filename As String
+    
+    Set pFiles = New Collection
+    Set pFilenames = New Collection
+    Set Nodes = Element.SelectNodes("file")
+    For Each Node In Nodes
+        Filedata = Node.SelectSingleNode("text()").NodeValue
+        Filename = Node.SelectSingleNode("@name").NodeValue
+        Add Filedata, Filename
+    Next
 End Sub

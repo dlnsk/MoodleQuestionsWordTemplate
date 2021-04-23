@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' Class representing subquestion of moodle matching question
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -57,3 +57,11 @@ Public Sub Export(ByRef QuestionElement As MSXML2.IXMLDOMElement)
     Set XMLText = DOM.createTextNode(pAnswer)
     XMLTextElement.appendChild XMLText
 End Sub
+
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Set pSubquestion = New CHTML
+    pSubquestion.Import Element
+    
+    pAnswer = Element.SelectSingleNode("answer/text/text()").NodeValue
+End Sub
+

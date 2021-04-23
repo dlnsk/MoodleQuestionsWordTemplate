@@ -234,5 +234,67 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Next Hint
 End Sub
 
+Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Nodes As MSXML2.IXMLDOMNodeList
+    Dim Node As MSXML2.IXMLDOMNode
+    Dim Subquestion As COrderSubquestion
+    Dim Hint As CHint
+    Dim Separator As String
+    Separator = Replace(Format(0, "0.0"), "0", "")
+    
+    pName = Element.SelectSingleNode("name/text/text()").NodeValue
+    
+    Set pQuestiontext = New CHTML
+    pQuestiontext.Import Element.SelectSingleNode("questiontext")
+    
+    Set pGeneralfeedback = New CHTML
+    pGeneralfeedback.Import Element.SelectSingleNode("generalfeedback")
+    
+    pDefaultgrade = CDbl(Replace(Element.SelectSingleNode("defaultgrade/text()").NodeValue, ".", Separator))
+    
+    pPenalty = CDbl(Replace(Element.SelectSingleNode("penalty/text()").NodeValue, ".", Separator))
+    
+    If Element.SelectSingleNode("hidden/text()").NodeValue = "1" Then
+        pHidden = True
+    Else
+        pHidden = False
+    End If
+    
+    If Element.SelectSingleNode("horizontal/text()").NodeValue = "1" Then
+        pHorizontal = True
+    Else
+        pHorizontal = False
+    End If
+    
+    Set pCorrectfeedback = New CHTML
+    pCorrectfeedback.Import Element.SelectSingleNode("correctfeedback")
+    
+    Set pPartiallycorrectfeedback = New CHTML
+    pPartiallycorrectfeedback.Import Element.SelectSingleNode("partiallycorrectfeedback")
+    
+    Set pIncorrectfeedback = New CHTML
+    pIncorrectfeedback.Import Element.SelectSingleNode("incorrectfeedback")
+    
+    If Not Element.SelectSingleNode("shownumcorrect") Is Nothing Then
+        pShownumcorrect = True
+    Else
+        pShownumcorrect = False
+    End If
+    
+    Set pSubquestions = New Collection
+    Set Nodes = Element.SelectNodes("subquestion")
+    For Each Node In Nodes
+        Set Subquestion = New COrderSubquestion
+        Subquestion.Import Node
+        pSubquestions.Add Subquestion
+    Next
 
+    Set pHints = New Collection
+    Set Nodes = Element.SelectNodes("hint")
+    For Each Node In Nodes
+        Set Hint = New CHint
+        Hint.Import Node
+        pHints.Add Hint
+    Next
+End Sub
 

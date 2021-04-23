@@ -52,11 +52,11 @@ Public Property Let Tolerance(ByVal NewValue As Double)
     pTolerance = NewValue
 End Property
 
-Public Property Get feedback() As CHTML
-    Set feedback = pFeedback
+Public Property Get Feedback() As CHTML
+    Set Feedback = pFeedback
 End Property
 
-Public Property Let feedback(ByVal NewValue As CHTML)
+Public Property Let Feedback(ByVal NewValue As CHTML)
     Set pFeedback = NewValue
 End Property
 
@@ -95,3 +95,19 @@ Public Sub Export(ByRef QuestionElement As MSXML2.IXMLDOMElement)
     Set XMLText = DOM.createTextNode(Replace(Format(pTolerance, "###0.00000"), ",", "."))
     XMLElement2.appendChild XMLText
 End Sub
+
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Separator As String
+    Separator = Replace(Format(0, "0.0"), "0", "")
+    
+    pFraction = CDbl(Replace(Element.SelectSingleNode("@fraction").NodeValue, ".", Separator))
+    
+    pAnswer = CVar(Replace(Element.SelectSingleNode("text/text()").NodeValue, ".", Separator))
+    
+    pTolerance = CDbl(Replace(Element.SelectSingleNode("tolerance/text()").NodeValue, ".", Separator))
+    
+    Set pFeedback = New CHTML
+    pFeedback.Import Element.SelectSingleNode("feedback")
+End Sub
+
+

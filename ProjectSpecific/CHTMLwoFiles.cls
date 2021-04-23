@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' Class representing moodle html textarea which does not allow to attach files (currently used only in responsetemplate in essay question).
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -41,4 +41,26 @@ Public Sub Export(ByRef ParentElement As MSXML2.IXMLDOMElement, ElementName As S
     Set XMLText = DOM.createTextNode(pText)
     XMLElement2.appendChild XMLText
     Set CreatedElement = XMLElement1
+End Sub
+
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Format As String
+    Format = Element.SelectSingleNode("@format").NodeValue
+    
+    Select Case Format
+        Case "html"
+            If Not Element.SelectSingleNode("text/text()") Is Nothing Then
+                pText = Element.SelectSingleNode("text/text()").NodeValue
+            Else
+                pText = ""
+            End If
+        Case "moodle_auto_format"
+            If Not Element.SelectSingleNode("text/text()") Is Nothing Then
+                pText = Element.SelectSingleNode("text/text()").NodeValue
+            Else
+                pText = ""
+            End If
+        Case Else
+            Err.Raise vbObjectError + 512 + 1, "CHTML", "Unsupported text format '" + Format + "'"
+    End Select
 End Sub

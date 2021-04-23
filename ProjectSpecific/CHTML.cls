@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' Class representing moodle html textarea with attached files.
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -63,4 +63,23 @@ Public Sub Export(ByRef ParentElement As MSXML2.IXMLDOMElement, ElementName As S
     XMLElement2.appendChild XMLText
     pFiles.Export XMLElement1
     Set CreatedElement = XMLElement1
+End Sub
+
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Format As String
+    Format = Element.SelectSingleNode("@format").NodeValue
+    
+    Select Case Format
+        Case "moodle_auto_format", "html", "plain_text"
+            If Not Element.SelectSingleNode("text/text()") Is Nothing Then
+                pText = Element.SelectSingleNode("text/text()").NodeValue
+            Else
+                pText = ""
+            End If
+        Case Else
+            Err.Raise vbObjectError + 512 + 1, "CHTML", "Unsupported text format '" + Format + "'"
+    End Select
+    
+    Set pFiles = New CFilesCollection
+    pFiles.Import Element
 End Sub

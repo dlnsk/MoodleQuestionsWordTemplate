@@ -2,13 +2,14 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "CTruefalse"
+Attribute VB_Name = "CTrueFalse"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' Class representing moodle multichoice question
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2015 Петр Молоков (PBMolokov@gmail.com)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -21,8 +22,8 @@ Private pGeneralfeedback As CHTML
 Private pDefaultgrade As Double
 Private pPenalty As Double
 Private pHidden As Boolean
-Private pAnswers As Collection
-Private pHints As Collection
+Private pAnswerTrue As CShortanswerAnswer
+Private pAnswerFalse As CShortanswerAnswer
 
 Private Sub Class_Initialize()
     pName = "-"
@@ -31,13 +32,19 @@ Private Sub Class_Initialize()
     pDefaultgrade = 1
     pPenalty = 1
     pHidden = False
-    Set pAnswers = New Collection
+    Set pAnswerTrue = New CShortanswerAnswer
+    pAnswerTrue.Text = "true"
+    pAnswerTrue.Fraction = 100
+    Set pAnswerFalse = New CShortanswerAnswer
+    pAnswerFalse.Text = "false"
+    pAnswerFalse.Fraction = 0
 End Sub
 
 Private Sub Class_Terminate()
     Set pQuestiontext = Nothing
     Set pGeneralfeedback = Nothing
-    Set pAnswers = Nothing
+    Set pAnswerTrue = Nothing
+    Set pAnswerFalse = Nothing
 End Sub
 
 Public Property Get Name() As String
@@ -75,7 +82,7 @@ End Property
 'Public Property Get Penalty() As Double
 '    Penalty = pPenalty
 'End Property
-
+'
 'Public Property Let Penalty(ByVal NewValue As Double)
 '    pPenalty = NewValue
 'End Property
@@ -88,14 +95,39 @@ End Property
 '    pHidden = NewValue
 'End Property
 
-Public Property Get Answers() As Collection
-    Set Answers = pAnswers
+Public Property Get Answer() As Boolean
+    If pAnswerTrue.Fraction = 100 Then
+        Answer = True
+    Else
+        Answer = False
+    End If
 End Property
 
-Public Property Set Answers(ByVal NewValue As Collection)
-    Set pAnswers = NewValue
+Public Property Let Answer(ByVal NewValue As Boolean)
+    If NewValue = True Then
+        pAnswerTrue.Fraction = 100
+        pAnswerFalse.Fraction = 0
+    Else
+        pAnswerTrue.Fraction = 0
+        pAnswerFalse.Fraction = 100
+    End If
 End Property
 
+Public Property Get Truefeedback() As CHTML
+    Set Truefeedback = pAnswerTrue.Feedback
+End Property
+
+Public Property Set Truefeedback(ByVal NewValue As CHTML)
+    Set pAnswerTrue.Feedback = NewValue
+End Property
+
+Public Property Get Falsefeedback() As CHTML
+    Set Falsefeedback = pAnswerFalse.Feedback
+End Property
+
+Public Property Set Falsefeedback(ByVal NewValue As CHTML)
+    Set pAnswerFalse.Feedback = NewValue
+End Property
 
 Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As IXMLDOMElement
@@ -104,7 +136,6 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLElement2 As IXMLDOMElement
     Dim XMLText As IXMLDOMText
     Dim XMLAttr As IXMLDOMAttribute
-    Dim Answer As CMultichoiceAnswer
     
     Set XMLRootElement = DOM.DocumentElement
     
@@ -144,9 +175,48 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     End If
     XMLElement1.appendChild XMLText
             
-    For Each Answer In pAnswers
-        Answer.Export XMLQuestionElement
-    Next Answer
+    pAnswerTrue.Export XMLQuestionElement
+    pAnswerFalse.Export XMLQuestionElement
 End Sub
 
+Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Nodes As MSXML2.IXMLDOMNodeList
+    Dim Node As MSXML2.IXMLDOMNode
+    Dim Answer As CMultichoiceAnswer
+    Dim Hint As CHint
+    Dim Separator As String
+    Separator = Replace(Format(0, "0.0"), "0", "")
+    Dim TmpAnswer As CShortanswerAnswer
+
+    pName = Element.SelectSingleNode("name/text/text()").NodeValue
+
+    Set pQuestiontext = New CHTML
+    pQuestiontext.Import Element.SelectSingleNode("questiontext")
+
+    Set pGeneralfeedback = New CHTML
+    pGeneralfeedback.Import Element.SelectSingleNode("generalfeedback")
+
+    pDefaultgrade = CDbl(Replace(Element.SelectSingleNode("defaultgrade/text()").NodeValue, ".", Separator))
+
+    pPenalty = CDbl(Replace(Element.SelectSingleNode("penalty/text()").NodeValue, ".", Separator))
+
+    If Element.SelectSingleNode("hidden/text()").NodeValue = "1" Then
+        pHidden = True
+    Else
+        pHidden = False
+    End If
+
+    Set pAnswerTrue = New CShortanswerAnswer
+    pAnswerTrue.Import Element.SelectSingleNode("answer[1]")
+
+    Set pAnswerFalse = New CShortanswerAnswer
+    pAnswerFalse.Import Element.SelectSingleNode("answer[2]")
+    
+    If pAnswerTrue.Text = "false" Then
+        Set TmpAnswer = pAnswerTrue
+        Set pAnswerTrue = pAnswerFalse
+        Set pAnswerFalse = TmpAnswer
+        Set TmpAnswer = Nothing
+    End If
+End Sub
 

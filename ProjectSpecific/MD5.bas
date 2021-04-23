@@ -331,7 +331,7 @@ End Sub
 
 ' FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4
 
-Private Function AddRotAdd(f As Long, a As Long, b As Long, x As Long, S As Integer, ac As Long) As Long
+Private Function AddRotAdd(f As Long, a As Long, b As Long, x As Long, s As Integer, ac As Long) As Long
 ' Common routine for FF, GG, HH and II
 ' #define AddRotAdd(f, a, b, c, d, x, s, ac) { \
 '  (a) += f + (x) + (UINT4)(ac); \
@@ -342,11 +342,11 @@ Private Function AddRotAdd(f As Long, a As Long, b As Long, x As Long, S As Inte
     temp = uwAdd(a, f)
     temp = uwAdd(temp, x)
     temp = uwAdd(temp, ac)
-    temp = uwRol(temp, S)
+    temp = uwRol(temp, s)
     AddRotAdd = uwAdd(temp, b)
 End Function
 
-Private Function FF(a As Long, b As Long, c As Long, d As Long, x As Long, S As Integer, ac As Long) As Long
+Private Function FF(a As Long, b As Long, c As Long, d As Long, x As Long, s As Integer, ac As Long) As Long
 ' Returns new value of a
 ' #define F(x, y, z) (((x) & (y)) | ((~x) & (z)))
 ' #define FF(a, b, c, d, x, s, ac) { \
@@ -360,44 +360,44 @@ Private Function FF(a As Long, b As Long, c As Long, d As Long, x As Long, S As 
     t = b And c
     t2 = (Not b) And d
     t = t Or t2
-    FF = AddRotAdd(t, a, b, x, S, ac)
+    FF = AddRotAdd(t, a, b, x, s, ac)
 End Function
 
-Private Function GG(a As Long, b As Long, c As Long, d As Long, x As Long, S As Integer, ac As Long) As Long
+Private Function GG(a As Long, b As Long, c As Long, d As Long, x As Long, s As Integer, ac As Long) As Long
 ' #define G(b, c, d) (((b) & (d)) | ((c) & (~d)))
     Dim t As Long
     Dim t2 As Long
     t = b And d
     t2 = c And (Not d)
     t = t Or t2
-    GG = AddRotAdd(t, a, b, x, S, ac)
+    GG = AddRotAdd(t, a, b, x, s, ac)
 End Function
 
-Private Function HH(a As Long, b As Long, c As Long, d As Long, x As Long, S As Integer, ac As Long) As Long
+Private Function HH(a As Long, b As Long, c As Long, d As Long, x As Long, s As Integer, ac As Long) As Long
 ' #define H(b, c, d) ((b) ^ (c) ^ (d))
     Dim t As Long
     t = b Xor c Xor d
-    HH = AddRotAdd(t, a, b, x, S, ac)
+    HH = AddRotAdd(t, a, b, x, s, ac)
 End Function
 
-Private Function II(a As Long, b As Long, c As Long, d As Long, x As Long, S As Integer, ac As Long) As Long
+Private Function II(a As Long, b As Long, c As Long, d As Long, x As Long, s As Integer, ac As Long) As Long
 ' #define I(b, c, d) ((c) ^ ((b) | (~d)))
     Dim t As Long
     t = b Or (Not d)
     t = c Xor t
-    II = AddRotAdd(t, a, b, x, S, ac)
+    II = AddRotAdd(t, a, b, x, s, ac)
 End Function
 
 ' Unsigned 32-bit word functions suitable for VB/VBA
 
-Private Function uwRol(w As Long, S As Integer) As Long
+Private Function uwRol(w As Long, s As Integer) As Long
 ' Return 32-bit word w rotated left by s bits
 ' avoiding problem with VB sign bit
     Dim I As Integer
     Dim t As Long
     
     uwRol = w
-    For I = 1 To S
+    For I = 1 To s
         t = uwRol And &H3FFFFFFF
         t = t * 2
         If (uwRol And &H40000000) <> 0 Then

@@ -7,8 +7,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-' Class representing hint in moodle shortanswer and numerical  question
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Class representing hint in moodle shortanswer and numerical question
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -43,4 +43,9 @@ Public Sub Export(ByRef QuestionElement As MSXML2.IXMLDOMElement)
     Set DOM = QuestionElement.OwnerDocument
     
     pHint.Export QuestionElement, "hint", XMLHintElement
+End Sub
+
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Set pHint = New CHTML
+    pHint.Import Element
 End Sub

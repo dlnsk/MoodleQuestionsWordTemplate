@@ -58,3 +58,10 @@ Public Sub Export(ByRef QuestionElement As MSXML2.IXMLDOMElement)
     XMLTextElement.appendChild XMLText
 End Sub
 
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Set pSubquestion = New CHTML
+    pSubquestion.Import Element
+    
+    pOrder = CLng(Element.SelectSingleNode("answer/text/text()").NodeValue)
+End Sub
+

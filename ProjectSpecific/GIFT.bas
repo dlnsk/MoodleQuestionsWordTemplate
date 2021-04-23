@@ -1450,9 +1450,9 @@ Dim start As Integer
     
     ChangeFileOpenDirectory temp
 
-    Dim S As InlineShape
-    For Each S In ActiveDocument.InlineShapes
-        S.AlternativeText = getrandom
+    Dim s As InlineShape
+    For Each s In ActiveDocument.InlineShapes
+        s.AlternativeText = getrandom
     Next
     
     ActiveDocument.WebOptions.AllowPNG = True
@@ -1626,10 +1626,10 @@ Dim adoc As Document, Doc As Document
             alt = getProperty("alt", str)
             
             'Заменяем картинки тегами
-            Dim S As InlineShape
-            For Each S In adoc.InlineShapes
-                If S.AlternativeText = alt Then
-                    S.Select
+            Dim s As InlineShape
+            For Each s In adoc.InlineShapes
+                If s.AlternativeText = alt Then
+                    s.Select
                     Selection.Range.Text = imgBase64(m_outputDir & "\" & fname)
                     Exit For
                 End If
@@ -1716,7 +1716,7 @@ Dim ncut As String
     Dim LastStyleQ As String 'для эссе
     Dim QDescription As CDescription
     Dim QEssay As CEssay
-    Dim QTrueFalse As CTruefalse
+    Dim QTrueFalse As CTrueFalse
     Dim QNumerical As CNumerical
     Dim ANumerical As CNumericalAnswer
     Dim QMultichoice As CMultichoice
@@ -1726,7 +1726,7 @@ Dim ncut As String
     Dim QMatching As CMatching
     Dim AMatching  As CMatchingSubquestion
     Dim Text As String
-    Dim feedback As String
+    Dim Feedback As String
     Dim TXT As TParseText
     Dim Answ As TNumericalAnswer
     Dim AnswM As TMultichoiceAnswer
@@ -1883,21 +1883,21 @@ Dim ncut As String
             End If
             
             'feedback
-            feedback = ""
+            Feedback = ""
             '===XML вопросы описание===
                 If paraStyles(I).StyleName = STYLE_DESCRIPTIONQ Then
                     LastStyle = STYLE_DESCRIPTIONQ
                     Text = paraStyles(I).Para.Range
                     If paraStyles(I + 1).StyleName = STYLE_FEEDBACK Then
-                        feedback = paraStyles(I + 1).Para.Range
+                        Feedback = paraStyles(I + 1).Para.Range
                         'MsgBox feedback
                     End If
                     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1)
-                    If Len(feedback) > 0 Then feedback = Left(feedback, Len(feedback) - 1)
+                    If Len(Feedback) > 0 Then Feedback = Left(Feedback, Len(Feedback) - 1)
                     
                     Set QDescription = New CDescription
                     Set QDescription.QuestionText = GetCHTML(Text)
-                    Set QDescription.Generalfeedback = GetCHTML(feedback)
+                    Set QDescription.Generalfeedback = GetCHTML(Feedback)
                     Text = QDescription.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
@@ -1913,12 +1913,12 @@ Dim ncut As String
                     Text = paraStyles(I).Para.Range
                 
                     If paraStyles(I + 1).StyleName = STYLE_FEEDBACK Then
-                        feedback = paraStyles(I + 1).Para.Range
+                        Feedback = paraStyles(I + 1).Para.Range
                         'MsgBox feedback
                     End If
                 
                     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1)
-                    If Len(feedback) > 0 Then feedback = Left(feedback, Len(feedback) - 1)
+                    If Len(Feedback) > 0 Then Feedback = Left(Feedback, Len(Feedback) - 1)
                     
                     
                     Set AShortanswer = New CShortanswerAnswer
@@ -1940,7 +1940,7 @@ Dim ncut As String
                 
                     Set QShortanswer = New CShortanswer
                     Set QShortanswer.QuestionText = GetCHTML(Text)
-                    Set QShortanswer.Generalfeedback = GetCHTML(feedback)
+                    Set QShortanswer.Generalfeedback = GetCHTML(Feedback)
                     Text = QShortanswer.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
@@ -1963,15 +1963,15 @@ Dim ncut As String
                     LastStyle = STYLE_ESSAYQ
                     Text = paraStyles(I).Para.Range
                     If paraStyles(I + 1).StyleName = STYLE_FEEDBACK Then
-                        feedback = paraStyles(I + 1).Para.Range
+                        Feedback = paraStyles(I + 1).Para.Range
                         'MsgBox feedback
                     End If
                     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1)
-                    If Len(feedback) > 0 Then feedback = Left(feedback, Len(feedback) - 1)
+                    If Len(Feedback) > 0 Then Feedback = Left(Feedback, Len(Feedback) - 1)
                     
                     Set QEssay = New CEssay
                     Set QEssay.QuestionText = GetCHTML(Text)
-                    Set QEssay.Generalfeedback = GetCHTML(feedback)
+                    Set QEssay.Generalfeedback = GetCHTML(Feedback)
                     Text = QEssay.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
@@ -1988,15 +1988,15 @@ Dim ncut As String
                     LastStyle = paraStyles(I).StyleName
                     Text = paraStyles(I).Para.Range
                     If paraStyles(I + 1).StyleName = STYLE_FEEDBACK Then
-                        feedback = paraStyles(I + 1).Para.Range
+                        Feedback = paraStyles(I + 1).Para.Range
                         'MsgBox feedback
                     End If
                     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1)
-                    If Len(feedback) > 0 Then feedback = Left(feedback, Len(feedback) - 1)
+                    If Len(Feedback) > 0 Then Feedback = Left(Feedback, Len(Feedback) - 1)
                     
-                    Set QTrueFalse = New CTruefalse
+                    Set QTrueFalse = New CTrueFalse
                     Set QTrueFalse.QuestionText = GetCHTML(Text)
-                    Set QTrueFalse.Generalfeedback = GetCHTML(feedback)
+                    Set QTrueFalse.Generalfeedback = GetCHTML(Feedback)
                     Text = QTrueFalse.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
@@ -2012,16 +2012,16 @@ Dim ncut As String
                     Text = paraStyles(I).Para.Range
                 
                     If paraStyles(I + 1).StyleName = STYLE_FEEDBACK Then
-                        feedback = paraStyles(I + 1).Para.Range
+                        Feedback = paraStyles(I + 1).Para.Range
                         'MsgBox feedback
                     End If
                 
                     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1)
-                    If Len(feedback) > 0 Then feedback = Left(feedback, Len(feedback) - 1)
+                    If Len(Feedback) > 0 Then Feedback = Left(Feedback, Len(Feedback) - 1)
                 
                     Set QNumerical = New CNumerical
                     Set QNumerical.QuestionText = GetCHTML(Text)
-                    Set QNumerical.Generalfeedback = GetCHTML(feedback)
+                    Set QNumerical.Generalfeedback = GetCHTML(Feedback)
                     Text = QNumerical.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
@@ -2036,16 +2036,16 @@ Dim ncut As String
                     Text = paraStyles(I).Para.Range
                 
                     If paraStyles(I + 1).StyleName = STYLE_FEEDBACK Then
-                        feedback = paraStyles(I + 1).Para.Range
+                        Feedback = paraStyles(I + 1).Para.Range
                         'MsgBox feedback
                     End If
                 
                     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1)
-                    If Len(feedback) > 0 Then feedback = Left(feedback, Len(feedback) - 1)
+                    If Len(Feedback) > 0 Then Feedback = Left(Feedback, Len(Feedback) - 1)
                 
                     Set QMultichoice = New CMultichoice
                     Set QMultichoice.QuestionText = GetCHTML(Text)
-                    Set QMultichoice.Generalfeedback = GetCHTML(feedback)
+                    Set QMultichoice.Generalfeedback = GetCHTML(Feedback)
                     Text = QMultichoice.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
@@ -2062,16 +2062,16 @@ Dim ncut As String
                     Text = paraStyles(I).Para.Range
                 
                     If paraStyles(I + 1).StyleName = STYLE_FEEDBACK Then
-                        feedback = paraStyles(I + 1).Para.Range
+                        Feedback = paraStyles(I + 1).Para.Range
                         'MsgBox feedback
                     End If
                 
                     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1)
-                    If Len(feedback) > 0 Then feedback = Left(feedback, Len(feedback) - 1)
+                    If Len(Feedback) > 0 Then Feedback = Left(Feedback, Len(Feedback) - 1)
                 
                     Set QShortanswer = New CShortanswer
                     Set QShortanswer.QuestionText = GetCHTML(Text)
-                    Set QShortanswer.Generalfeedback = GetCHTML(feedback)
+                    Set QShortanswer.Generalfeedback = GetCHTML(Feedback)
                     Text = QShortanswer.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
@@ -2088,16 +2088,16 @@ Dim ncut As String
                     Text = paraStyles(I).Para.Range
                 
                     If paraStyles(I + 1).StyleName = STYLE_FEEDBACK Then
-                        feedback = paraStyles(I + 1).Para.Range
+                        Feedback = paraStyles(I + 1).Para.Range
                         'MsgBox feedback
                     End If
                 
                     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1)
-                    If Len(feedback) > 0 Then feedback = Left(feedback, Len(feedback) - 1)
+                    If Len(Feedback) > 0 Then Feedback = Left(Feedback, Len(Feedback) - 1)
                 
                     Set QMatching = New CMatching
                     Set QMatching.QuestionText = GetCHTML(Text)
-                    Set QMatching.Generalfeedback = GetCHTML(feedback)
+                    Set QMatching.Generalfeedback = GetCHTML(Feedback)
                     Text = QMatching.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
@@ -2278,21 +2278,21 @@ Dim ncut As String
                 ' Question feedback
                 ElseIf .StyleName = STYLE_FEEDBACK Then
                     'XML
-                    feedback = .Para.Range
-                    If Len(feedback) > 0 Then feedback = Left(feedback, Len(feedback) - 1)
+                    Feedback = .Para.Range
+                    If Len(Feedback) > 0 Then Feedback = Left(Feedback, Len(Feedback) - 1)
                     
                     If LastStyle = STYLE_NUMERICALQ Then 'Комментарий для ответом числового вопроса
-                        ANumerical.feedback = GetCHTML(feedback)
+                        ANumerical.Feedback = GetCHTML(Feedback)
                         QNumerical.Answers.Add ANumerical
                         AnswEnd = False
                     End If
                     If LastStyle = STYLE_MULTIPLECHOICEQ Then 'Комментарий для ответов мультивыбор
-                        AMultichoice.feedback = GetCHTML(feedback)
+                        AMultichoice.Feedback = GetCHTML(Feedback)
                         QMultichoice.Answers.Add AMultichoice
                         AnswEnd = False
                     End If
                     If LastStyle = STYLE_SHORTANSWERQ Then 'Комментарий для ответов короткий выбор
-                        AShortanswer.feedback = GetCHTML(feedback)
+                        AShortanswer.Feedback = GetCHTML(Feedback)
                         QShortanswer.Answers.Add AShortanswer
                         AnswEnd = False
                     End If
@@ -2308,7 +2308,7 @@ Dim ncut As String
                                 AMultichoice.Fraction = 0
                                 TFAnswer = TFAnswer + 2
                             End If
-                            AMultichoice.feedback = GetCHTML(feedback)
+                            AMultichoice.Feedback = GetCHTML(Feedback)
                         ElseIf LastStyleQ = STYLE_WRONG_ANSWER Then
                             Set AMultichoice = New CMultichoiceAnswer
                             If LastStyle = STYLE_TRUESTATEMENT Then
@@ -2320,7 +2320,7 @@ Dim ncut As String
                                 AMultichoice.Fraction = 100
                                 TFAnswer = TFAnswer + 1
                             End If
-                            AMultichoice.feedback = GetCHTML(feedback)
+                            AMultichoice.Feedback = GetCHTML(Feedback)
                         End If
                         
                         QTrueFalse.Answers.Add AMultichoice

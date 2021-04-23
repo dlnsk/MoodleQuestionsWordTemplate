@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' Class representing moodle essay question
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -237,4 +237,54 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     pResponsetemplate.Export XMLQuestionElement, "responsetemplate"
 End Sub
 
+Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+    
+    Dim Nodes As MSXML2.IXMLDOMNodeList
+    Dim Node As MSXML2.IXMLDOMNode
+    Dim Answer As CShortanswerAnswer
+    Dim Hint As CShortanswerHint
+    Dim Separator As String
+    Separator = Replace(Format(0, "0.0"), "0", "")
+    
+    pName = Element.SelectSingleNode("name/text/text()").NodeValue
+    
+    Set pQuestiontext = New CHTML
+    pQuestiontext.Import Element.SelectSingleNode("questiontext")
+    
+    Set pGeneralfeedback = New CHTML
+    pGeneralfeedback.Import Element.SelectSingleNode("generalfeedback")
+    
+    pDefaultgrade = CDbl(Replace(Element.SelectSingleNode("defaultgrade/text()").NodeValue, ".", Separator))
+    
+    pPenalty = CDbl(Replace(Element.SelectSingleNode("penalty/text()").NodeValue, ".", Separator))
+    
+    If Element.SelectSingleNode("hidden/text()").NodeValue = "1" Then
+        pHidden = True
+    Else
+        pHidden = False
+    End If
+    
+    Select Case Element.SelectSingleNode("responseformat/text()").NodeValue
+        Case "editor"
+            pResponseformat = EssayReponseformatOptions.reponseformat_editor
+        Case "editorfilepicker"
+            pResponseformat = EssayReponseformatOptions.reponseformat_editorfilepicker
+        Case "monospaced"
+            pResponseformat = EssayReponseformatOptions.reponseformat_monospaced
+        Case "plain"
+            pResponseformat = EssayReponseformatOptions.reponseformat_plain
+        Case Else
+            Err.Raise vbObjectError + 512 + 1, "CEssay", "Unknown responseformat value"
+    End Select
+    
+    pResponsefieldlines = CLng(Element.SelectSingleNode("responsefieldlines/text()").NodeValue)
+    
+    pAttachments = CLng(Element.SelectSingleNode("attachments/text()").NodeValue)
+
+    Set pGraderinfo = New CHTML
+    pGraderinfo.Import Element.SelectSingleNode("graderinfo")
+    
+    Set pResponsetemplate = New CHTMLwoFiles
+    pResponsetemplate.Import Element.SelectSingleNode("responsetemplate")
+End Sub
 

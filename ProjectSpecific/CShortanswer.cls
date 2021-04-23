@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' Class representing moodle shortanswer question
-' Copyright 2014 Vadim Dvorovenko (Vadimon@mail.ru)
+' Copyright 2014-2015 Vadim Dvorovenko (Vadimon@mail.ru)
 ' License http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 Option Explicit
@@ -182,4 +182,52 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Next Hint
 End Sub
 
+Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Nodes As MSXML2.IXMLDOMNodeList
+    Dim Node As MSXML2.IXMLDOMNode
+    Dim Answer As CShortanswerAnswer
+    Dim Hint As CShortanswerHint
+    Dim Separator As String
+    Separator = Replace(Format(0, "0.0"), "0", "")
+    
+    pName = Element.SelectSingleNode("name/text/text()").NodeValue
+    
+    Set pQuestiontext = New CHTML
+    pQuestiontext.Import Element.SelectSingleNode("questiontext")
+    
+    Set pGeneralfeedback = New CHTML
+    pGeneralfeedback.Import Element.SelectSingleNode("generalfeedback")
+    
+    pDefaultgrade = CDbl(Replace(Element.SelectSingleNode("defaultgrade/text()").NodeValue, ".", Separator))
+    
+    pPenalty = CDbl(Replace(Element.SelectSingleNode("penalty/text()").NodeValue, ".", Separator))
+    
+    If Element.SelectSingleNode("hidden/text()").NodeValue = "1" Then
+        pHidden = True
+    Else
+        pHidden = False
+    End If
+    
+    If Element.SelectSingleNode("usecase/text()").NodeValue = "1" Then
+        pUsecase = True
+    Else
+        pUsecase = False
+    End If
+    
+    Set pAnswers = New Collection
+    Set Nodes = Element.SelectNodes("answer")
+    For Each Node In Nodes
+        Set Answer = New CShortanswerAnswer
+        Answer.Import Node
+        pAnswers.Add Answer
+    Next
+
+    Set pHints = New Collection
+    Set Nodes = Element.SelectNodes("hint")
+    For Each Node In Nodes
+        Set Hint = New CShortanswerHint
+        Hint.Import Node
+        pHints.Add Hint
+    Next
+End Sub
 

@@ -288,3 +288,77 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
         Hint.Export XMLQuestionElement
     Next Hint
 End Sub
+
+Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Nodes As MSXML2.IXMLDOMNodeList
+    Dim Node As MSXML2.IXMLDOMNode
+    Dim Answer As CNumericalAnswer
+    Dim Hint As CShortanswerHint
+    Dim Unit As CNumericalUnit
+    Dim Separator As String
+    Separator = Replace(Format(0, "0.0"), "0", "")
+    
+    pName = Element.SelectSingleNode("name/text/text()").NodeValue
+    
+    Set pQuestiontext = New CHTML
+    pQuestiontext.Import Element.SelectSingleNode("questiontext")
+    
+    Set pGeneralfeedback = New CHTML
+    pGeneralfeedback.Import Element.SelectSingleNode("generalfeedback")
+    
+    pDefaultgrade = CDbl(Replace(Element.SelectSingleNode("defaultgrade/text()").NodeValue, ".", Separator))
+    
+    pPenalty = CDbl(Replace(Element.SelectSingleNode("penalty/text()").NodeValue, ".", Separator))
+    
+    If Element.SelectSingleNode("hidden/text()").NodeValue = "1" Then
+        pHidden = True
+    Else
+        pHidden = False
+    End If
+    
+    Set pUnits = New Collection
+    Set Nodes = Element.SelectNodes("units/unit")
+    For Each Node In Nodes
+        Set Unit = New CNumericalUnit
+        Unit.Import Node
+        pUnits.Add Unit
+    Next
+
+    pUnitpenalty = CDbl(Replace(Element.SelectSingleNode("unitpenalty/text()").NodeValue, ".", Separator))
+    
+    pUnitgradingtype = CLng(Element.SelectSingleNode("unitgradingtype/text()").NodeValue)
+    
+    pShowunits = CLng(Element.SelectSingleNode("showunits/text()").NodeValue)
+
+    pUnitposition = CLng(Element.SelectSingleNode("unitsleft/text()").NodeValue)
+    
+    If pUnitgradingtype <> NumericalUnitgradingtypeOptions.unitgradingtype_none Then
+       pUnitrole = NumericalUnitroleOptions.unitrole_unitgraded
+    Else
+        If pShowunits = NumericalShowunitsOptions.showunits_none Then
+            pUnitrole = NumericalUnitroleOptions.Unitrole_onlynumerical
+        Else
+            pUnitrole = NumericalUnitroleOptions.Unitrole_manynumerical
+        End If
+    End If
+    Unitrole = Unitrole
+    
+    Set pAnswers = New Collection
+    Set Nodes = Element.SelectNodes("answer")
+    For Each Node In Nodes
+        Set Answer = New CNumericalAnswer
+        Answer.Import Node
+        pAnswers.Add Answer
+    Next
+
+    Set pHints = New Collection
+    Set Nodes = Element.SelectNodes("hint")
+    For Each Node In Nodes
+        Set Hint = New CShortanswerHint
+        Hint.Import Node
+        pHints.Add Hint
+    Next
+
+End Sub
+
+
