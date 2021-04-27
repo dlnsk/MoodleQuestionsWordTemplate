@@ -47,12 +47,6 @@ Private Function AppendText(ByRef Doc As Word.Document, ByVal Text As String) As
     Range.Collapse wdCollapseEnd
     Range.InsertAfter Text
     Range.End = Doc.Range.End
-    Range.Paragraphs.SpaceBefore = 0
-    Range.Paragraphs.SpaceBeforeAuto = False
-    Range.Paragraphs.SpaceAfter = 0
-    Range.Paragraphs.SpaceAfterAuto = False
-    Range.Bold = False
-    Range.Italic = False
     Set AppendText = Range
 End Function
 
@@ -61,6 +55,7 @@ Private Function AppendHTML2(ByRef Doc As Word.Document, ByRef HTML As CHTML)
     Dim Range As Word.Range
     Dim rangeStart As Long
     Dim docNew As Word.Document
+    Dim p As Variant
     
     
     HTMLToClipboard.HTMLToClipboard HTML
@@ -96,19 +91,22 @@ End Function
 
 ' Вставляет HTML-фрагмент в конец документа. Возвращает фрагмент документа со вставленным текстом
 ' Для ускорения, фрагменты без HTML-тэгов вставляются прямым текстом
-Private Function AppendHTML(ByRef Doc As Word.Document, ByRef HTML As CHTML) As Word.Range
+Private Function AppendHTML(ByRef Doc As Word.Document, ByRef HTML As CHTML, Style As String) As Word.Range
     Dim RegExp As Object
+    Dim Range As Word.Range
 
     Set RegExp = CreateObject("VBScript.RegExp")
     RegExp.Global = True
     RegExp.MultiLine = True
     RegExp.Pattern = "<(""[^""]*""|'[^']*'|[^'"">])*>"
     If RegExp.Test(HTML.Text) Then
-        Set AppendHTML = AppendHTML2(Doc, HTML)
+        Set Range = AppendHTML2(Doc, HTML)
     Else
-        Set AppendHTML = AppendText(Doc, HTML.Text)
+        Set Range = AppendText(Doc, HTML.Text)
         Doc.Paragraphs.Add
     End If
+    Range.Style = Style
+    Set AppendHTML = Range
 End Function
 
 ' Вставляет вопросы в документ
@@ -227,8 +225,7 @@ Private Sub AppendQuestionText(ByRef Doc As Word.Document, QuestionNumber As Lon
 '    Range.Paragraphs.SpaceBefore = 12
 '
 '    Doc.Paragraphs.Add
-    Set Range = AppendHTML(Doc, QuestionText)
-    Range.Style = Style
+    Set Range = AppendHTML(Doc, QuestionText, Style)
 End Sub
 
 Private Sub AppendDdmatch(ByRef Doc As Word.Document, ByRef Question As CDdmatch, QuestionNumber As Long)
@@ -322,25 +319,22 @@ Private Sub AppendMatching(ByRef Doc As Word.Document, ByRef Question As CMatchi
         QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_MATCHINGQ
         
     If Question.Generalfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Общий комментарий к вопросу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Generalfeedback
+        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
     End If
 
-    If Question.Correctfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Комментарий к верному ответу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Correctfeedback
-    End If
-
-    If Question.Incorrectfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Комментарий к неверному ответу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Incorrectfeedback
-    End If
+'    If Question.Correctfeedback.Text <> "" Then
+'        Set Range = AppendText(Doc, "Комментарий к верному ответу: ")
+'        Range.Bold = False
+'        Range.Italic = True
+'        AppendHTML Doc, Question.Correctfeedback
+'    End If
+'
+'    If Question.Incorrectfeedback.Text <> "" Then
+'        Set Range = AppendText(Doc, "Комментарий к неверному ответу: ")
+'        Range.Bold = False
+'        Range.Italic = True
+'        AppendHTML Doc, Question.Incorrectfeedback
+'    End If
 
     For I = 1 To Question.Subquestions.Count
         AppendMatchingSubquestion Doc, Question.Subquestions.Item(I), I
@@ -350,23 +344,10 @@ End Sub
 Private Sub AppendMatchingSubquestion(ByRef Doc As Word.Document, ByRef Subquestion As CMatchingSubquestion, SubquestionNumber As Long)
     Dim Range As Word.Range
     
-    If Subquestion.Subquestion.Text <> "" Then
-        Set Range = AppendText(Doc, "Подвопрос № " & CStr(SubquestionNumber) & ". ")
-        Range.Bold = True
-        Range.Italic = True
-        AppendHTML Doc, Subquestion.Subquestion
-        Set Range = AppendText(Doc, "Ответ на подвопрос № " & CStr(SubquestionNumber) & ". ")
-        Range.Bold = True
-        Range.Italic = True
-        AppendText Doc, Subquestion.Answer
-        Doc.Paragraphs.Add
-    Else
-        Set Range = AppendText(Doc, "Неверный ответ. ")
-        Range.Bold = True
-        Range.Italic = True
-        AppendText Doc, Subquestion.Answer
-        Doc.Paragraphs.Add
-    End If
+    Set Range = AppendHTML(Doc, Subquestion.Subquestion, GIFT.STYLE_LEFT_PAIR)
+    Set Range = AppendText(Doc, Subquestion.Answer)
+    Range.Style = GIFT.STYLE_RIGHT_PAIR
+    Doc.Paragraphs.Add
 End Sub
 
 Private Sub AppendMultichoice(ByRef Doc As Word.Document, ByRef Question As CMultichoice, QuestionNumber As Long)

@@ -64,7 +64,7 @@ Attribute VB_Name = "GIFT"
 '********************************************************
 
 ' General purpose styles.
-Const STYLE_FEEDBACK = "09. Комментарий"
+Public Const STYLE_FEEDBACK = "09. Комментарий"
 Const STYLE_ANSWERWEIGHT = "0. ВесОтвета"
 Const STYLE_NORMAL = "Обычный"
 Const STYLE_MATHTYPE = "MTConvertedEquation"
