@@ -16,3 +16,5 @@ Public Const strCreateGeneralError = "Не удалось провести загрузку из-за неизвес
 Public Const strCreateError1 = "Ошибка. Во входном файле присутствует вопрос неподдерживаемого типа '$1'"
 Public Const strLoadFinished = "Загрузка завершена"
 
+Public Const strIgnore = "Данный текст игнорируется, используется только комментарий к нему."
+

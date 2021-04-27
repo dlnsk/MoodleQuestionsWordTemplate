@@ -72,8 +72,8 @@ Const STYLE_PARAGRAPH_DEFAULT = "Основной шрифт абзаца"
 
 ' Styles for multiple choice questions
 Const STYLE_MULTIPLECHOICEQ = "06. ВопрМножВыбор"
-Const STYLE_RIGHT_ANSWER = "06.1 ВерныйОтвет"
-Const STYLE_WRONG_ANSWER = "06.2 НеверныйОтвет"
+Public Const STYLE_RIGHT_ANSWER = "06.1 ВерныйОтвет"
+Public Const STYLE_WRONG_ANSWER = "06.2 НеверныйОтвет"
 
 ' Styles for matching pair questions
 Public Const STYLE_MATCHINGQ = "03. ВопрНаСопоставление"
@@ -81,8 +81,8 @@ Public Const STYLE_LEFT_PAIR = "03.1 Утверждение"
 Public Const STYLE_RIGHT_PAIR = "03.2 ОтветНаУтвержд"
 
 ' Styles for true-false questions
-Const STYLE_TRUESTATEMENT = "02.1 ВерноеУтвержд"
-Const STYLE_FALSESTATEMENT = "02.2 НеверноеУтвержд"
+Public Const STYLE_TRUESTATEMENT = "02.1 ВерноеУтвержд"
+Public Const STYLE_FALSESTATEMENT = "02.2 НеверноеУтвержд"
 
 ' Style for short answer question
 Const STYLE_SHORTANSWERQ = "05. ВопрКороткийОтв"

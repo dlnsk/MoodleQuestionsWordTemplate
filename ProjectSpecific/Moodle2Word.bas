@@ -582,45 +582,32 @@ Private Sub AppendTruefalse(ByRef Doc As Word.Document, ByRef Question As CTrueF
     Dim QuestionType As String
     Dim Range As Word.Range
     Dim I As Long
+    Dim IgnoreMessage As CHTML
     
     If Question.Answer = True Then
-        QuestionType = "Верно/неверно. Верное утверждение"
+        QuestionType = GIFT.STYLE_TRUESTATEMENT
     Else
-        QuestionType = "Верно/неверно. Неверное утверждение"
+        QuestionType = GIFT.STYLE_FALSESTATEMENT
     End If
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText
+        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=QuestionType
         
-'    Set Range = AppendText(Doc, "Ответ: ")
-'    Range.Bold = True
-'    Range.Italic = True
-'    If Question.Answer = True Then
-'        AppendText Doc, "Верно"
-'    Else
-'        AppendText Doc, "Неверно"
-'    End If
-'    Doc.Paragraphs.Add
-'
     If Question.Generalfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Общий комментарий к вопросу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Generalfeedback
+        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
     End If
+    
+    Set IgnoreMessage = New CHTML
+    IgnoreMessage.Text = strIgnore
 
     If Question.Truefeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Комментарий к ответу " & Chr(171) & "Верно" & Chr(187) & ": ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Truefeedback
+        AppendHTML Doc, IgnoreMessage, GIFT.STYLE_RIGHT_ANSWER
+        AppendHTML Doc, Question.Truefeedback, GIFT.STYLE_FEEDBACK
     End If
 
     If Question.Falsefeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Комментарий к ответу " & Chr(171) & "Неверно" & Chr(187) & ": ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Truefeedback
+        AppendHTML Doc, IgnoreMessage, GIFT.STYLE_WRONG_ANSWER
+        AppendHTML Doc, Question.Falsefeedback, GIFT.STYLE_FEEDBACK
     End If
 End Sub
 
