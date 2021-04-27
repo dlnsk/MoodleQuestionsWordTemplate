@@ -355,35 +355,32 @@ Private Sub AppendMultichoice(ByRef Doc As Word.Document, ByRef Question As CMul
     Dim Range As Word.Range
     Dim I As Long
     
-    If Question.Singleanswer Then
-        QuestionType = "Множественный выбор. Один вариант ответа"
-    Else
-        QuestionType = "Множественный выбор. Несколько вариантов ответа"
-    End If
+'    If Question.Singleanswer Then
+'        QuestionType = "Множественный выбор. Один вариант ответа"
+'    Else
+'        QuestionType = "Множественный выбор. Несколько вариантов ответа"
+'    End If
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText
+        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_MULTIPLECHOICEQ
         
     If Question.Generalfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Общий комментарий к вопросу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Generalfeedback
+        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
     End If
 
-    If Question.Correctfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Комментарий к верному ответу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Correctfeedback
-    End If
-
-    If Question.Incorrectfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Комментарий к неверному ответу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Incorrectfeedback
-    End If
+'    If Question.Correctfeedback.Text <> "" Then
+'        Set Range = AppendText(Doc, "Комментарий к верному ответу: ")
+'        Range.Bold = False
+'        Range.Italic = True
+'        AppendHTML Doc, Question.Correctfeedback
+'    End If
+'
+'    If Question.Incorrectfeedback.Text <> "" Then
+'        Set Range = AppendText(Doc, "Комментарий к неверному ответу: ")
+'        Range.Bold = False
+'        Range.Italic = True
+'        AppendHTML Doc, Question.Incorrectfeedback
+'    End If
 
     For I = 1 To Question.Answers.Count
         AppendMultichoiceAnswer Doc, Question.Answers.Item(I)
@@ -392,23 +389,25 @@ End Sub
 
 Private Sub AppendMultichoiceAnswer(ByRef Doc As Word.Document, ByRef Answer As CMultichoiceAnswer)
     Dim Range As Word.Range
+    Dim FractionRange As Word.Range
     
-    If Answer.Fraction = 100 Then
-        Set Range = AppendText(Doc, "Верный ответ. ")
-    ElseIf Answer.Fraction <= 0 Then
-        Set Range = AppendText(Doc, "Неверный ответ. ")
-    Else
-        Set Range = AppendText(Doc, "Частично верный ответ (" & CStr(Round(Answer.Fraction)) & "%). ")
+    If Answer.Fraction <> 100 And Answer.Fraction <> 0 Then
+        Set FractionRange = AppendText(Doc, CStr(Round(Answer.Fraction)) & "%")
+        FractionRange.End = FractionRange.End - 1
     End If
-    Range.Bold = True
-    Range.Italic = True
-    Set Range = AppendHTML(Doc, Answer.Answer)
+    
+    If Answer.Fraction > 0 Then
+        AppendHTML Doc, Answer.Answer, GIFT.STYLE_RIGHT_ANSWER
+    Else
+        AppendHTML Doc, Answer.Answer, GIFT.STYLE_WRONG_ANSWER
+    End If
+    
+    If Answer.Fraction <> 100 And Answer.Fraction <> 0 Then
+        FractionRange.Style = GIFT.STYLE_ANSWERWEIGHT
+    End If
     
     If Answer.Feedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Комментарий к ответу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Answer.Feedback
+        AppendHTML Doc, Answer.Feedback, GIFT.STYLE_FEEDBACK
     End If
 End Sub
 

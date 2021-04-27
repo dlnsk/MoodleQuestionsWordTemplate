@@ -71,7 +71,7 @@ Const STYLE_MATHTYPE = "MTConvertedEquation"
 Const STYLE_PARAGRAPH_DEFAULT = "Основной шрифт абзаца"
 
 ' Styles for multiple choice questions
-Const STYLE_MULTIPLECHOICEQ = "06. ВопрМножВыбор"
+Public Const STYLE_MULTIPLECHOICEQ = "06. ВопрМножВыбор"
 Public Const STYLE_RIGHT_ANSWER = "06.1 ВерныйОтвет"
 Public Const STYLE_WRONG_ANSWER = "06.2 НеверныйОтвет"
 
