@@ -523,6 +523,7 @@ Private Sub AppendShortanswer(ByRef Doc As Word.Document, ByRef Question As CSho
     Dim Range As Word.Range
     Dim I As Long
     
+    ' Регистр пока не используется
     If Question.Usecase Then
         QuestionType = "Короткий ответ. Без учета регистра"
     Else
@@ -530,13 +531,10 @@ Private Sub AppendShortanswer(ByRef Doc As Word.Document, ByRef Question As CSho
     End If
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText
+        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_SHORTANSWERQ
         
     If Question.Generalfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Общий комментарий к вопросу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Generalfeedback
+        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
     End If
 
     For I = 1 To Question.Answers.Count
@@ -545,36 +543,24 @@ Private Sub AppendShortanswer(ByRef Doc As Word.Document, ByRef Question As CSho
 End Sub
 
 Private Sub AppendShortanswerAnswer(ByRef Doc As Word.Document, ByRef Answer As CShortanswerAnswer)
+    Dim FractionRange As Word.Range
     Dim Range As Word.Range
     
-    If Answer.Text <> "*" And Answer.Fraction >= 0 Then
-        If Answer.Fraction = 100 Then
-            Set Range = AppendText(Doc, "Верный ответ. ")
-        Else
-            Set Range = AppendText(Doc, "Частично верный ответ (" & CStr(Round(Answer.Fraction)) & "%). ")
-        End If
-        Range.Bold = True
-        Range.Italic = True
-        Set Range = AppendText(Doc, Answer.Text)
-        Range.Bold = False
-        Range.Italic = False
-        Doc.Paragraphs.Add
+    If Answer.Fraction <> 100 Then
+        Set FractionRange = AppendText(Doc, CStr(Round(Answer.Fraction)) & "%")
+        FractionRange.End = FractionRange.End - 1
     End If
     
-    If Answer.Text <> "*" And Answer.Fraction >= 0 Then
-        If Answer.Feedback.Text <> "" Then
-            Set Range = AppendText(Doc, "Комментарий к ответу: ")
-            Range.Bold = False
-            Range.Italic = True
-            AppendHTML Doc, Answer.Feedback
-        End If
-    Else
-        If Answer.Feedback.Text <> "" Then
-            Set Range = AppendText(Doc, "Комментарий к неверному ответу: ")
-            Range.Bold = False
-            Range.Italic = True
-            AppendHTML Doc, Answer.Feedback
-        End If
+    Set Range = AppendText(Doc, Answer.Text)
+    Range.Style = GIFT.STYLE_RIGHT_ANSWER
+    
+    If Answer.Fraction <> 100 Then
+        FractionRange.Style = GIFT.STYLE_ANSWERWEIGHT
+    End If
+    Doc.Paragraphs.Add
+    
+    If Answer.Feedback.Text <> "" Then
+        AppendHTML Doc, Answer.Feedback, GIFT.STYLE_FEEDBACK
     End If
 End Sub
 

@@ -65,7 +65,7 @@ Attribute VB_Name = "GIFT"
 
 ' General purpose styles.
 Public Const STYLE_FEEDBACK = "09. Комментарий"
-Const STYLE_ANSWERWEIGHT = "0. ВесОтвета"
+Public Const STYLE_ANSWERWEIGHT = "0. ВесОтвета"
 Const STYLE_NORMAL = "Обычный"
 Const STYLE_MATHTYPE = "MTConvertedEquation"
 Const STYLE_PARAGRAPH_DEFAULT = "Основной шрифт абзаца"
@@ -85,7 +85,7 @@ Public Const STYLE_TRUESTATEMENT = "02.1 ВерноеУтвержд"
 Public Const STYLE_FALSESTATEMENT = "02.2 НеверноеУтвержд"
 
 ' Style for short answer question
-Const STYLE_SHORTANSWERQ = "05. ВопрКороткийОтв"
+Public Const STYLE_SHORTANSWERQ = "05. ВопрКороткийОтв"
 
 ' Style for numerical question
 Const STYLE_NUMERICALQ = "04. ВопрЧисловой"
