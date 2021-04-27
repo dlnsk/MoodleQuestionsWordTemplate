@@ -419,13 +419,10 @@ Private Sub AppendNumerical(ByRef Doc As Word.Document, ByRef Question As CNumer
     QuestionType = "Числовой ответ"
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText
+        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_NUMERICALQ
         
     If Question.Generalfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Общий комментарий к вопросу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Generalfeedback
+        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
     End If
 
     For I = 1 To Question.Answers.Count
@@ -435,40 +432,37 @@ End Sub
 
 Private Sub AppendNumericalAnswer(ByRef Doc As Word.Document, ByRef Answer As CNumericalAnswer)
     Dim Range As Word.Range
+    Dim FractionRange As Word.Range
+    Dim FinalAnswer As String
     
-    If Answer.Answer <> "*" And Answer.Fraction >= 0 Then
-        If Answer.Fraction = 100 Then
-            Set Range = AppendText(Doc, "Верный ответ. ")
-        Else
-            Set Range = AppendText(Doc, "Частично верный ответ (" & CStr(Round(Answer.Fraction)) & "%). ")
-        End If
-        Range.Bold = True
-        Range.Italic = True
-        Set Range = AppendText(Doc, CStr(Answer.Answer))
-        Range.Bold = False
-        Range.Italic = False
-        If Answer.Tolerance > 0 Then
-            Set Range = AppendText(Doc, "±" & CStr(Answer.Tolerance))
-            Range.Bold = False
-            Range.Italic = False
-        End If
-        Doc.Paragraphs.Add
+    If Answer.Fraction <> 100 And Answer.Fraction <> 0 Then
+        Set FractionRange = AppendText(Doc, CStr(Round(Answer.Fraction)) & "%")
+        FractionRange.End = FractionRange.End - 1
     End If
     
-    If Answer.Answer <> "*" And Answer.Fraction >= 0 Then
-        If Answer.Feedback.Text <> "" Then
-            Set Range = AppendText(Doc, "Комментарий к ответу: ")
-            Range.Bold = False
-            Range.Italic = True
-            AppendHTML Doc, Answer.Feedback
-        End If
+    If Answer.Fraction > 0 Then
+        FinalAnswer = CStr(Answer.Answer)
     Else
-        If Answer.Feedback.Text <> "" Then
-            Set Range = AppendText(Doc, "Комментарий к неверному ответу: ")
-            Range.Bold = False
-            Range.Italic = True
-            AppendHTML Doc, Answer.Feedback
-        End If
+        FinalAnswer = Strings.strIgnore
+    End If
+    
+    If Answer.Tolerance > 0 Then
+        FinalAnswer = FinalAnswer & ":" & CStr(Answer.Tolerance)
+    End If
+    Set Range = AppendText(Doc, FinalAnswer)
+    If Answer.Fraction > 0 Then
+        Range.Style = GIFT.STYLE_RIGHT_ANSWER
+    Else
+        Range.Style = GIFT.STYLE_WRONG_ANSWER
+    End If
+    
+    If Answer.Fraction <> 100 And Answer.Fraction <> 0 Then
+        FractionRange.Style = GIFT.STYLE_ANSWERWEIGHT
+    End If
+    Doc.Paragraphs.Add
+
+    If Answer.Feedback.Text <> "" Then
+        AppendHTML Doc, Answer.Feedback, GIFT.STYLE_FEEDBACK
     End If
 End Sub
 

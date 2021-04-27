@@ -88,7 +88,7 @@ Public Const STYLE_FALSESTATEMENT = "02.2 НеверноеУтвержд"
 Public Const STYLE_SHORTANSWERQ = "05. ВопрКороткийОтв"
 
 ' Style for numerical question
-Const STYLE_NUMERICALQ = "04. ВопрЧисловой"
+Public Const STYLE_NUMERICALQ = "04. ВопрЧисловой"
 
 ' Style for missing word question
 Const STYLE_MISSINGWORDQ = "08. ВопрПропущСлово"
