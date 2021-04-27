@@ -29,7 +29,7 @@ Public Sub Moodle2Word()
     Set Questions = New CQuestionCollection
     Questions.Import Filename
     
-    Set Doc = Documents.Add
+    Set Doc = ActiveDocument
     AppendQuestions Doc, Questions
     
     MsgBox strLoadFinished
@@ -59,16 +59,38 @@ End Function
 ' Вставляет HTML-фрагмент в конец документа
 Private Function AppendHTML2(ByRef Doc As Word.Document, ByRef HTML As CHTML)
     Dim Range As Word.Range
+    Dim rangeStart As Long
+    Dim docNew As Word.Document
+    
     
     HTMLToClipboard.HTMLToClipboard HTML
+    
+    'Создаем новый документ для обработки полученных после конвертации из html данных
+    Set docNew = Documents.Add
+    docNew.Range.Paste
+    For Each p In docNew.Paragraphs
+        If Len(p.Range.Text) = 1 Then
+            p.Range.Delete
+        End If
+    Next
+    If docNew.Paragraphs.Count > 1 Then
+        Set Range = docNew.Range
+        Range.End = docNew.Paragraphs(docNew.Paragraphs.Count - 1).Range.End
+        With Range.Find
+            .Text = "^p"
+            .Replacement.Text = "^l"
+            .Forward = True
+            .Wrap = wdFindStop
+        End With
+        Range.Find.Execute Replace:=wdReplaceAll
+    End If
+    docNew.Range.Copy
+    docNew.Close SaveChanges:=wdDoNotSaveChanges
+    
     Set Range = Doc.Range
     Range.Collapse wdCollapseEnd
     Range.Paste
-    Range.End = Doc.Range.End
-    Range.Paragraphs.SpaceBefore = 0
-    Range.Paragraphs.SpaceBeforeAuto = False
-    Range.Paragraphs.SpaceAfter = 0
-    Range.Paragraphs.SpaceAfterAuto = False
+    
     Set AppendHTML2 = Range
 End Function
 
@@ -153,32 +175,9 @@ Private Sub AppendCategory(ByRef Doc As Word.Document, CategoryName As String)
     RegExp.MultiLine = True
     RegExp.Pattern = "^\$[\s\S]*\$/"
     CategoriesList = RegExp.Replace(CategoryName, "")
-    
-    Categories = Split(Replace(CategoriesList, "//", "!@#DOUBLESLASH#@!"), "/")
-    For I = 0 To UBound(Categories)
-        Categories(I) = Replace(Categories(I), "!@#DOUBLESLASH#@!", "/")
-    Next
-    LastCategoriesHit = False
-    If LastCategories Is Nothing Then
-        Set LastCategories = New Collection
-    End If
-    For I = 0 To UBound(Categories)
-        If I > LastCategories.Count - 1 Then
-            LastCategoriesHit = True
-        ElseIf Categories(I) <> LastCategories.Item(I + 1) Then
-            LastCategoriesHit = True
-        End If
-        If LastCategoriesHit Then
-            Set Range = AppendText(Doc, Categories(I))
-            Doc.Paragraphs.Last.Style = "Заголовок " & CStr(I + 1)
-            Doc.Paragraphs.Add
-            LastCategoriesHit = True
-        End If
-    Next
-    Set LastCategories = New Collection
-    For I = 0 To UBound(Categories)
-        LastCategories.Add Categories(I)
-    Next
+    Set Range = AppendText(Doc, CategoryName)
+    Doc.Paragraphs.Last.Style = GIFT.STYLE_CATEGORY
+    Doc.Paragraphs.Add
 End Sub
 
 ' Вставляет вопрос в документ
@@ -217,18 +216,19 @@ End Sub
 ' QuestionType - текстовое представление типа вопроса
 ' QuestionName - Название вопроса
 ' QuestionText - Текст вопроса
-Private Sub AppendQuestionText(ByRef Doc As Word.Document, QuestionNumber As Long, QuestionType As String, QuestionGrade As Double, QuestionText As CHTML)
+Private Sub AppendQuestionText(ByRef Doc As Word.Document, QuestionNumber As Long, QuestionType As String, QuestionGrade As Double, QuestionText As CHTML, Style As String)
     Dim Text As String
     Dim Range As Word.Range
     
-    Text = CStr(QuestionNumber) & ". " & QuestionType & ". Оценка: " & QuestionGrade
-    Set Range = AppendText(Doc, Text)
-    Range.Bold = True
-    Range.Italic = False
-    Range.Paragraphs.SpaceBefore = 12
-    
-    Doc.Paragraphs.Add
-    AppendHTML Doc, QuestionText
+'    Text = CStr(QuestionNumber) & ". " & QuestionType & ". Оценка: " & QuestionGrade
+'    Set Range = AppendText(Doc, Text)
+'    Range.Bold = True
+'    Range.Italic = False
+'    Range.Paragraphs.SpaceBefore = 12
+'
+'    Doc.Paragraphs.Add
+    Set Range = AppendHTML(Doc, QuestionText)
+    Range.Style = Style
 End Sub
 
 Private Sub AppendDdmatch(ByRef Doc As Word.Document, ByRef Question As CDdmatch, QuestionNumber As Long)
@@ -319,7 +319,7 @@ Private Sub AppendMatching(ByRef Doc As Word.Document, ByRef Question As CMatchi
     
     QuestionType = "На сопоставление"
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText
+        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_MATCHINGQ
         
     If Question.Generalfeedback.Text <> "" Then
         Set Range = AppendText(Doc, "Общий комментарий к вопросу: ")
