@@ -1803,49 +1803,10 @@ Dim ncut As String
                 'If AnswEnd = True Then QMatching.Answers.Add AMatching
                 Questions.Add QMatching
             ElseIf LastStyle = STYLE_TRUESTATEMENT Or LastStyle = STYLE_FALSESTATEMENT Then
-            'MsgBox str(TFAnswer)
-                If TFAnswer = 0 Then
-                    If LastStyle = STYLE_TRUESTATEMENT Then
-                        Set AMultichoice = New CMultichoiceAnswer
-                        AMultichoice.Answer.Text = "true"
-                        AMultichoice.Fraction = 100
-                        QTrueFalse.Answers.Add AMultichoice
-                        Set AMultichoice = New CMultichoiceAnswer
-                        AMultichoice.Answer.Text = "false"
-                        AMultichoice.Fraction = 0
-                        QTrueFalse.Answers.Add AMultichoice
-                    ElseIf LastStyle = STYLE_FALSESTATEMENT Then
-                        Set AMultichoice = New CMultichoiceAnswer
-                        AMultichoice.Answer.Text = "true"
-                        AMultichoice.Fraction = 0
-                        QTrueFalse.Answers.Add AMultichoice
-                        Set AMultichoice = New CMultichoiceAnswer
-                        AMultichoice.Answer.Text = "false"
-                        AMultichoice.Fraction = 100
-                        QTrueFalse.Answers.Add AMultichoice
-                    End If
-                ElseIf TFAnswer = 1 Then
-                    Set AMultichoice = New CMultichoiceAnswer
-                    If LastStyle = STYLE_TRUESTATEMENT Then
-                        AMultichoice.Answer.Text = "false"
-                        AMultichoice.Fraction = 0
-                        QTrueFalse.Answers.Add AMultichoice
-                    ElseIf LastStyle = STYLE_FALSESTATEMENT Then
-                        AMultichoice.Answer.Text = "false"
-                        AMultichoice.Fraction = 100
-                        QTrueFalse.Answers.Add AMultichoice
-                    End If
-                ElseIf TFAnswer = 2 Then
-                    Set AMultichoice = New CMultichoiceAnswer
-                    If LastStyle = STYLE_TRUESTATEMENT Then
-                        AMultichoice.Answer.Text = "true"
-                        AMultichoice.Fraction = 100
-                        QTrueFalse.Answers.Add AMultichoice
-                    ElseIf LastStyle = STYLE_FALSESTATEMENT Then
-                        AMultichoice.Answer.Text = "true"
-                        AMultichoice.Fraction = 0
-                        QTrueFalse.Answers.Add AMultichoice
-                    End If
+                If LastStyle = STYLE_TRUESTATEMENT Then
+                    QTrueFalse.Answer = True
+                Else
+                    QTrueFalse.Answer = False
                 End If
                 Questions.Add QTrueFalse
             End If
@@ -2298,32 +2259,10 @@ Dim ncut As String
                     End If
                     If LastStyle = STYLE_TRUESTATEMENT Or LastStyle = STYLE_FALSESTATEMENT Then 'truefalse
                         If LastStyleQ = STYLE_RIGHT_ANSWER Then
-                            Set AMultichoice = New CMultichoiceAnswer
-                            If LastStyle = STYLE_TRUESTATEMENT Then
-                                AMultichoice.Answer.Text = "true"
-                                AMultichoice.Fraction = 100
-                                TFAnswer = TFAnswer + 1
-                            Else
-                                AMultichoice.Answer.Text = "false"
-                                AMultichoice.Fraction = 0
-                                TFAnswer = TFAnswer + 2
-                            End If
-                            AMultichoice.Feedback = GetCHTML(Feedback)
+                            QTrueFalse.Truefeedback = GetCHTML(Feedback)
                         ElseIf LastStyleQ = STYLE_WRONG_ANSWER Then
-                            Set AMultichoice = New CMultichoiceAnswer
-                            If LastStyle = STYLE_TRUESTATEMENT Then
-                                AMultichoice.Answer.Text = "false"
-                                AMultichoice.Fraction = 0
-                                TFAnswer = TFAnswer + 2
-                            Else
-                                AMultichoice.Answer.Text = "true"
-                                AMultichoice.Fraction = 100
-                                TFAnswer = TFAnswer + 1
-                            End If
-                            AMultichoice.Feedback = GetCHTML(Feedback)
+                            QTrueFalse.Falsefeedback = GetCHTML(Feedback)
                         End If
-                        
-                        QTrueFalse.Answers.Add AMultichoice
                     End If
                     
                     
@@ -2349,48 +2288,10 @@ Dim ncut As String
     ElseIf LastStyle = STYLE_MATCHINGQ Then
         Questions.Add QMatching
     ElseIf LastStyle = STYLE_TRUESTATEMENT Or LastStyle = STYLE_FALSESTATEMENT Then
-        If TFQuestion = 0 Then
-            If LastStyle = STYLE_TRUESTATEMENT Then
-                Set AMultichoice = New CMultichoiceAnswer
-                AMultichoice.Answer.Text = "true"
-                AMultichoice.Fraction = 100
-                QTrueFalse.Answers.Add AMultichoice
-                Set AMultichoice = New CMultichoiceAnswer
-                AMultichoice.Answer.Text = "false"
-                AMultichoice.Fraction = 0
-                QTrueFalse.Answers.Add AMultichoice
-            ElseIf LastStyle = STYLE_FALSESTATEMENT Then
-                Set AMultichoice = New CMultichoiceAnswer
-                AMultichoice.Answer.Text = "true"
-                AMultichoice.Fraction = 0
-                QTrueFalse.Answers.Add AMultichoice
-                Set AMultichoice = New CMultichoiceAnswer
-                AMultichoice.Answer.Text = "false"
-                AMultichoice.Fraction = 100
-                QTrueFalse.Answers.Add AMultichoice
-            End If
-        ElseIf TFQuestion = 1 Then
-            Set AMultichoice = New CMultichoiceAnswer
-            If LastStyle = STYLE_TRUESTATEMENT Then
-                AMultichoice.Answer.Text = "false"
-                AMultichoice.Fraction = 0
-                QTrueFalse.Answers.Add AMultichoice
-            ElseIf LastStyle = STYLE_FALSESTATEMENT Then
-                AMultichoice.Answer.Text = "false"
-                AMultichoice.Fraction = 100
-                QTrueFalse.Answers.Add AMultichoice
-            End If
-        ElseIf TFQuestion = 2 Then
-            Set AMultichoice = New CMultichoiceAnswer
-            If LastStyle = STYLE_TRUESTATEMENT Then
-                AMultichoice.Answer.Text = "true"
-                AMultichoice.Fraction = 100
-                QTrueFalse.Answers.Add AMultichoice
-            ElseIf LastStyle = STYLE_FALSESTATEMENT Then
-                AMultichoice.Answer.Text = "true"
-                AMultichoice.Fraction = 0
-                QTrueFalse.Answers.Add AMultichoice
-            End If
+        If LastStyleQ = STYLE_RIGHT_ANSWER Then
+            QTrueFalse.Truefeedback = GetCHTML(Feedback)
+        ElseIf LastStyleQ = STYLE_WRONG_ANSWER Then
+            QTrueFalse.Falsefeedback = GetCHTML(Feedback)
         End If
         Questions.Add QTrueFalse
     End If
