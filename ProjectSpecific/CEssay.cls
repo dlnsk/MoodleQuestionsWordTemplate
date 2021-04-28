@@ -51,7 +51,7 @@ Private pResponseformat As Long
 Private pResponsefieldlines As Long
 Private pAttachments As Long
 Private pGraderinfo As CHTML
-Private pResponsetemplate As CHTMLwoFiles
+Private pResponsetemplate As CHTML
 
 Private Sub Class_Initialize()
     pName = "-"
@@ -154,12 +154,12 @@ Public Property Set Graderinfo(ByVal NewValue As CHTML)
     Set pGraderinfo = NewValue
 End Property
 
-Public Property Get Responsetemplate() As String
-    Responsetemplate = pResponsetemplate.Text
+Public Property Get Responsetemplate() As CHTML
+    Responsetemplate = pResponsetemplate
 End Property
 
-Public Property Let Responsetemplate(ByVal NewValue As String)
-    pResponsetemplate.Text = NewValue
+Public Property Let Responsetemplate(ByVal NewValue As CHTML)
+    pResponsetemplate = NewValue
 End Property
 
 Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
@@ -284,7 +284,7 @@ Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
     Set pGraderinfo = New CHTML
     pGraderinfo.Import Element.SelectSingleNode("graderinfo")
     
-    Set pResponsetemplate = New CHTMLwoFiles
+    Set pResponsetemplate = New CHTML
     pResponsetemplate.Import Element.SelectSingleNode("responsetemplate")
 End Sub
 

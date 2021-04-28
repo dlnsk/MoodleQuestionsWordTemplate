@@ -291,20 +291,18 @@ Private Sub AppendEssay(ByRef Doc As Word.Document, ByRef Question As CEssay, Qu
     QuestionType = "Эссе"
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText
+        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_ESSAYQ
         
     If Question.Generalfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Общий комментарий к вопросу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Generalfeedback
+        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
+    End If
+
+    If Question.Responsetemplate.Text <> "" Then
+        AppendHTML Doc, Question.Responsetemplate, GIFT.STYLE_RIGHT_ANSWER
     End If
 
     If Question.Graderinfo.Text <> "" Then
-        Set Range = AppendText(Doc, "Информация для оценки: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Graderinfo
+        AppendHTML Doc, Question.Graderinfo, GIFT.STYLE_WRONG_ANSWER
     End If
 
 End Sub

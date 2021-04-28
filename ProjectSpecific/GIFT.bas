@@ -95,7 +95,7 @@ Const STYLE_MISSINGWORDQ = "08. ¬опрѕропущ—лово"
 Const STYLE_BLANK_WORD = "08.1 ѕропуск"
 
 ' Style for essay question
-Const STYLE_ESSAYQ = "07. ¬опрЁссе"
+Public Const STYLE_ESSAYQ = "07. ¬опрЁссе"
 
 ' Style for description question
 Const STYLE_DESCRIPTIONQ = "00. ќписание"
@@ -2149,7 +2149,7 @@ Dim ncut As String
                             Text = Replace(Text, "\\", "&&&slesh&&&")
                             Text = Replace(Text, "\", "")
                             Text = Replace(Text, "&&&slesh&&&", "\\")
-                            QEssay.Responsetemplate = Text
+                            QEssay.Responsetemplate = GetCHTML(Text)
                     End If
                     If LastStyle = STYLE_TRUESTATEMENT Or LastStyle = STYLE_FALSESTATEMENT Then
                         LastStyleQ = STYLE_WRONG_ANSWER
