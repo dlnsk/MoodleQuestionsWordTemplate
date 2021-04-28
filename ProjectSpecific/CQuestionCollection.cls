@@ -91,6 +91,10 @@ Private Function GetQuestion(Element As MSXML2.IXMLDOMElement) As Object
             Set Question = New CCategory
             Question.Import Element
             Set GetQuestion = Question
+        Case "description"
+            Set Question = New CDescription
+            Question.Import Element
+            Set GetQuestion = Question
         Case "ddmatch"
             Set Question = New CDdmatch
             Question.Import Element

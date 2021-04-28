@@ -186,6 +186,8 @@ Private Sub AppendQuestion(ByRef Doc As Word.Document, ByRef Question As Object,
     
     QuestionType = LCase(Typename(Question))
     Select Case QuestionType
+        Case "cdescription"
+            AppendDescription Doc, Question, QuestionNumber
         Case "cddmatch"
             AppendDdmatch Doc, Question, QuestionNumber
         Case "cessay"
@@ -346,6 +348,18 @@ Private Sub AppendMatchingSubquestion(ByRef Doc As Word.Document, ByRef Subquest
     Set Range = AppendText(Doc, Subquestion.Answer)
     Range.Style = GIFT.STYLE_RIGHT_PAIR
     Doc.Paragraphs.Add
+End Sub
+
+Private Sub AppendDescription(ByRef Doc As Word.Document, ByRef Question As CDescription, QuestionNumber As Long)
+    Dim QuestionType As String
+    Dim Range As Word.Range
+    
+    AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
+        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_DESCRIPTIONQ
+        
+    If Question.Generalfeedback.Text <> "" Then
+        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
+    End If
 End Sub
 
 Private Sub AppendMultichoice(ByRef Doc As Word.Document, ByRef Question As CMultichoice, QuestionNumber As Long)

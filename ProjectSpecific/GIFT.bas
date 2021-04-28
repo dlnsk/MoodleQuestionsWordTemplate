@@ -98,7 +98,7 @@ Const STYLE_BLANK_WORD = "08.1 Пропуск"
 Public Const STYLE_ESSAYQ = "07. ВопрЭссе"
 
 ' Style for description question
-Const STYLE_DESCRIPTIONQ = "00. Описание"
+Public Const STYLE_DESCRIPTIONQ = "00. Описание"
 
 ' Style for category
 Public Const STYLE_CATEGORY = "01. Категория"
