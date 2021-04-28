@@ -134,4 +134,5 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
 
 End Sub
 
-
+Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+End Sub

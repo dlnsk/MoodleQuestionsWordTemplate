@@ -18,6 +18,3 @@ Private Sub CommandButton2_Click()
     Hide
 End Sub
 
-Private Sub Label1_Click()
-
-End Sub
