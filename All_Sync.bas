@@ -11,7 +11,7 @@ Private Const SPECIFIC_ABS_KEY = "specificAbs: "
 Private Const MISC_SYNCLIST_REL_KEY = "miscListRel: "
 Private Const MISC_SYNCLIST_ABS_KEY = "miscListAbs: "
 'Forms can be annoying- coming up as diffs all the time, so you can use this to turn export off for them
-Private Const EXPORT_FORMS = True
+Private Const EXPORT_FORMS = False
 
 Private ThisDoc As Object
 
