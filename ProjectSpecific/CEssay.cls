@@ -64,7 +64,7 @@ Private Sub Class_Initialize()
     pResponsefieldlines = EssayResponsefieldlinesOptions.responsefieldlines_15
     pAttachments = Essay¿ttachmentsOptions.attachments_0
     Set pGraderinfo = New CHTML
-    Set pResponsetemplate = New CHTMLwoFiles
+    Set pResponsetemplate = New CHTML
 End Sub
 
 Private Sub Class_Terminate()
@@ -155,11 +155,11 @@ Public Property Set Graderinfo(ByVal NewValue As CHTML)
 End Property
 
 Public Property Get Responsetemplate() As CHTML
-    Responsetemplate = pResponsetemplate
+    Set Responsetemplate = pResponsetemplate
 End Property
 
 Public Property Let Responsetemplate(ByVal NewValue As CHTML)
-    pResponsetemplate = NewValue
+    Set pResponsetemplate = NewValue
 End Property
 
 Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
