@@ -113,20 +113,20 @@ Public Property Let Answer(ByVal NewValue As Boolean)
     End If
 End Property
 
-Public Property Get Truefeedback() As CHTML
-    Set Truefeedback = pAnswerTrue.Feedback
+Public Property Get TrueFeedback() As CHTML
+    Set TrueFeedback = pAnswerTrue.Feedback
 End Property
 
-Public Property Set Truefeedback(ByVal NewValue As CHTML)
-    Set pAnswerTrue.Feedback = NewValue
+Public Property Let TrueFeedback(ByRef NewValue As CHTML)
+    pAnswerTrue.Feedback = NewValue
 End Property
 
-Public Property Get Falsefeedback() As CHTML
-    Set Falsefeedback = pAnswerFalse.Feedback
+Public Property Get FalseFeedback() As CHTML
+    Set FalseFeedback = pAnswerFalse.Feedback
 End Property
 
-Public Property Set Falsefeedback(ByVal NewValue As CHTML)
-    Set pAnswerFalse.Feedback = NewValue
+Public Property Let FalseFeedback(ByRef NewValue As CHTML)
+    pAnswerFalse.Feedback = NewValue
 End Property
 
 Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)

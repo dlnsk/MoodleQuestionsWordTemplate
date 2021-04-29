@@ -591,14 +591,14 @@ Private Sub AppendTruefalse(ByRef Doc As Word.Document, ByRef Question As CTrueF
     Set IgnoreMessage = New CHTML
     IgnoreMessage.Text = strIgnore
 
-    If Question.Truefeedback.Text <> "" Then
+    If Question.TrueFeedback.Text <> "" Then
         AppendHTML Doc, IgnoreMessage, GIFT.STYLE_RIGHT_ANSWER
-        AppendHTML Doc, Question.Truefeedback, GIFT.STYLE_FEEDBACK
+        AppendHTML Doc, Question.TrueFeedback, GIFT.STYLE_FEEDBACK
     End If
 
-    If Question.Falsefeedback.Text <> "" Then
+    If Question.FalseFeedback.Text <> "" Then
         AppendHTML Doc, IgnoreMessage, GIFT.STYLE_WRONG_ANSWER
-        AppendHTML Doc, Question.Falsefeedback, GIFT.STYLE_FEEDBACK
+        AppendHTML Doc, Question.FalseFeedback, GIFT.STYLE_FEEDBACK
     End If
 End Sub
 

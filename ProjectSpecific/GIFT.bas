@@ -2259,9 +2259,9 @@ Dim ncut As String
                     End If
                     If LastStyle = STYLE_TRUESTATEMENT Or LastStyle = STYLE_FALSESTATEMENT Then 'truefalse
                         If LastStyleQ = STYLE_RIGHT_ANSWER Then
-                            QTrueFalse.Truefeedback = GetCHTML(Feedback)
+                            QTrueFalse.TrueFeedback = GetCHTML(Feedback)
                         ElseIf LastStyleQ = STYLE_WRONG_ANSWER Then
-                            QTrueFalse.Falsefeedback = GetCHTML(Feedback)
+                            QTrueFalse.FalseFeedback = GetCHTML(Feedback)
                         End If
                     End If
                     
@@ -2289,9 +2289,9 @@ Dim ncut As String
         Questions.Add QMatching
     ElseIf LastStyle = STYLE_TRUESTATEMENT Or LastStyle = STYLE_FALSESTATEMENT Then
         If LastStyleQ = STYLE_RIGHT_ANSWER Then
-            QTrueFalse.Truefeedback = GetCHTML(Feedback)
+            QTrueFalse.TrueFeedback = GetCHTML(Feedback)
         ElseIf LastStyleQ = STYLE_WRONG_ANSWER Then
-            QTrueFalse.Falsefeedback = GetCHTML(Feedback)
+            QTrueFalse.FalseFeedback = GetCHTML(Feedback)
         End If
         Questions.Add QTrueFalse
     End If
