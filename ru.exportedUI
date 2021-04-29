@@ -1,0 +1,42 @@
+<mso:cmd app="Word" dt="0" />
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+	<ribbon startFromScratch="false">
+		<tabs>
+			<tab id="moodleXMLTab" label="MoodleXML">
+				<group id="groupImport" label="Импорт">
+					<button id="import-act" imageMso="ImportTextFile" size="large" label="Импортировать АСТ" screentip="Импорт вопросов в формате АСТ" onAction="RibbonImportACT"/>
+					<button id="import-xml" imageMso="ImportXmlFile" size="large" label="Импортировать XML" screentip="Импорт вопросов в формате MoodleXML" onAction="RibbonImportXML"/>
+				</group>
+				<group id="groupQuestions" label="Добавить вопрос">
+					<button id="add-сategory" imageMso="FacilitiesAssignCategory" size="large" label="Категория" screentip="Добавить категорию вопросов" onAction="RibbonAddCategory"/>
+					<button id="add-description" imageMso="SlideMasterMasterLayout" size="large" label="Описание" screentip="Информация, не предполагающая ответа" onAction="RibbonAddDescriptionQ"/>
+					<menu id="true-false-group" imageMso="ColorAqua" label="Верно/Неверно" size="large">
+						<button id="add-true-stat" imageMso="ColorGreen" label="Верное утверждение" screentip="Добавить верное утверждение" onAction="RibbonAddTrueStatement"/>
+						<button id="add-false-stat" imageMso="ColorRed" label="Неверное утверждение" screentip="Добавить неверное утверждение" onAction="RibbonAddFalseStatement"/>
+					</menu>
+					<button id="add-matching" imageMso="VisioAngledConnector" size="large" label="Соответствие" screentip="Добавить вопрос на соответствие" onAction="RibbonAddMatchingQ"/>
+					<button id="add-numerical" imageMso="Calculator" size="large" label="Числовой" screentip="Добавить вопрос на соответствие" onAction="RibbonAddNumericalQ"/>
+					<button id="add-short" imageMso="SectionRename" size="large" label="Короткий ответ" screentip="Добавить вопрос с коротким текстовым ответом" onAction="RibbonAddShortAnswerQ"/>
+					<button id="add-multiply" imageMso="SetAsDefault" size="large" label="Множественный выбор" screentip="Добавить вопрос с выбором одного или нескольких вариантов" onAction="RibbonAddMultipleChoiceQ"/>
+					<button id="add-essay" imageMso="ShareWithBuildingBlockCommunity" size="large" label="Эссе" screentip="Добавить вопрос с развернутым текстовым ответом" onAction="RibbonAddEssayQ"/>
+					<menu id="missing-word-group" imageMso="TaskInspect" label="С пропущеным словом" size="large">
+						<button id="add-missing-q" imageMso="TaskInspect" label="Добавить вопрос" screentip="Добавить текст вопроса" onAction="RibbonAddMissingWordQ"/>
+						<button id="add-gap" imageMso="TextEffectsGlowsMoreOptions" label="Выделить скрываемое слово" screentip="Выделить слово, являющееся ответом" onAction="RibbonMarkBlankWord"/>
+					</menu>
+				</group>
+				<group id="groupAnswers" label="Ответы и комментарии">
+					<button id="change-true-false" imageMso="UseVotingButtonsMenu" size="large" label="Замена Верный/Неверный" screentip="Изменение верного ответа на неверный и обратно" onAction="RibbonExchangeTrueFalse"/>
+					<button id="set-weight" imageMso="SetPertWeights" size="large" label="Указать вес" screentip="Добавляет веса к ответам" onAction="RibbonSetAswersWeight"/>
+					<button id="remove-weight" imageMso="RemoveFromCalendar" size="large" label="Убрать вес" screentip="Убирает веса, указанные к ответам" onAction="RibbonRemoveAnswersWeight"/>
+					<button id="add-comment" imageMso="ReviewNewComment" size="large" label="Добавить комментарий" screentip="Добавляет комментарий к вопросу или ответу" onAction="RibbonAddComment"/>
+				</group>
+				<group id="groupExport" label="Экспорт">
+					<button id="check-export" imageMso="UnreadMenu" size="large" label="Проверить корректность" screentip="Проверка корректности содержимого документа" onAction="RibbonCheckStructure"/>
+					<button id="export-gift" imageMso="ExportTextFile" size="large" label="Экспортировать в GIFT" screentip="Экспорт вопросов в формат GIFT с картинками" onAction="RibbonExportGIFT"/>
+					<button id="export-xml" imageMso="ExportXmlFile" size="large" label="Экспортировать в MoodleXML" screentip="Экспорт вопросов в формат MoodleXML с картинками" onAction="RibbonExportXML"/>
+					<button id="about" imageMso="ShapeBasicsHelp" size="large" label="О макросе" screentip="Информация о макросе и разработчиках" onAction="RibbonShowAbout"/>
+				</group>
+			</tab>
+		</tabs>
+	</ribbon>
+</customUI>
