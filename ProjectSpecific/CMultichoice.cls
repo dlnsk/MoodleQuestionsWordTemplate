@@ -24,6 +24,7 @@ Public Enum MultichoiceAnswernumberingOptions
     numbering_none
 End Enum
 
+Private pQuestion As CQuestionCommon
 Private pName As String
 Private pQuestiontext As CHTML
 Private pGeneralfeedback As CHTML
@@ -41,6 +42,7 @@ Private pAnswers As Collection
 Private pHints As Collection
 
 Private Sub Class_Initialize()
+    Set pQuestion = New CQuestionCommon
     pName = "-"
     Set pQuestiontext = New CHTML
     Set pGeneralfeedback = New CHTML
@@ -66,6 +68,7 @@ Private Sub Class_Terminate()
     Set pIncorrectfeedback = Nothing
     Set pAnswers = Nothing
     Set pHints = Nothing
+    Set pQuestion = Nothing
 End Sub
 
 Public Property Get Name() As String
@@ -188,6 +191,10 @@ Public Property Set Hints(ByVal NewValue As Collection)
     Set pHints = NewValue
 End Property
 
+Public Function CleanText(Text As String)
+    CleanText = pQuestion.CleanText(Text)
+End Function
+
 Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As IXMLDOMElement
     Dim XMLQuestionElement As IXMLDOMElement
@@ -210,7 +217,7 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     XMLQuestionElement.appendChild XMLElement1
     Set XMLElement2 = DOM.createElement("text")
     XMLElement1.appendChild XMLElement2
-    Set XMLText = DOM.createTextNode(pName)
+    Set XMLText = DOM.createTextNode(CleanText(pName))
     XMLElement2.appendChild XMLText
     
     pQuestiontext.Export XMLQuestionElement, "questiontext"

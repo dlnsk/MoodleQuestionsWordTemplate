@@ -16,6 +16,7 @@ Option Explicit
 
 Implements CQuestion
 
+Private pQuestion As CQuestionCommon
 Private pName As String
 Private pQuestiontext As CHTML
 Private pGeneralfeedback As CHTML
@@ -25,6 +26,7 @@ Private pHidden As Boolean
 
 
 Private Sub Class_Initialize()
+    Set pQuestion = New CQuestionCommon
     pName = "-"
     Set pQuestiontext = New CHTML
     Set pGeneralfeedback = New CHTML
@@ -36,6 +38,7 @@ End Sub
 Private Sub Class_Terminate()
     Set pQuestiontext = Nothing
     Set pGeneralfeedback = Nothing
+    Set pQuestion = Nothing
 End Sub
 
 Public Property Get Name() As String
@@ -78,6 +81,10 @@ Public Property Let Penalty(ByVal NewValue As Double)
     pPenalty = NewValue
 End Property
 
+Public Function CleanText(Text As String)
+    CleanText = pQuestion.CleanText(Text)
+End Function
+
 'Public Property Get Hidden() As Boolean
 '    Hidden = pHidden
 'End Property
@@ -106,7 +113,7 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     XMLQuestionElement.appendChild XMLElement1
     Set XMLElement2 = DOM.createElement("text")
     XMLElement1.appendChild XMLElement2
-    Set XMLText = DOM.createTextNode(pName)
+    Set XMLText = DOM.createTextNode(CleanText(pName))
     XMLElement2.appendChild XMLText
     
     pQuestiontext.Export XMLQuestionElement, "questiontext"

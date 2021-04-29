@@ -15,15 +15,28 @@ Option Explicit
 
 Implements CQuestion
 
-Private pCategoryName As String
+Private pQuestion As CQuestionCommon
+Private pName As String
+
+Private Sub Class_Initialize()
+    Set pQuestion = New CQuestionCommon
+End Sub
+
+Private Sub Class_Terminate()
+    Set pQuestion = Nothing
+End Sub
 
 Public Property Get Name() As String
-    Name = pCategoryName
+    Name = pName
 End Property
 
 Public Property Let Name(ByVal NewValue As String)
-    pCategoryName = NewValue
+    pName = NewValue
 End Property
+
+Public Function CleanText(Text As String)
+    CleanText = pQuestion.CleanText(Text)
+End Function
 
 Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As MSXML2.IXMLDOMElement
@@ -48,10 +61,10 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Set XMLTextElement = DOM.createElement("text")
     XMLCategoryElement.appendChild XMLTextElement
     
-    Set XMLText = DOM.createTextNode(pCategoryName)
+    Set XMLText = DOM.createTextNode(CleanText(pName))
     XMLTextElement.appendChild XMLText
 End Sub
 
 Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
-    pCategoryName = Element.SelectSingleNode("category/text/text()").NodeValue
+    pName = Element.SelectSingleNode("category/text/text()").NodeValue
 End Sub

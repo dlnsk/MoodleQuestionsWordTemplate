@@ -50,6 +50,7 @@ Public Sub Export(ByRef ParentElement As MSXML2.IXMLDOMElement, ElementName As S
     Dim XMLElement2 As MSXML2.IXMLDOMElement
     Dim XMLText As MSXML2.IXMLDOMText
     Dim XMLAttr As MSXML2.IXMLDOMAttribute
+    Dim nodeCDATA As MSXML2.IXMLDOMCDATASection
     
     Set DOM = ParentElement.OwnerDocument
     Set XMLElement1 = DOM.createElement(ElementName)
@@ -59,8 +60,13 @@ Public Sub Export(ByRef ParentElement As MSXML2.IXMLDOMElement, ElementName As S
     XMLElement1.setAttributeNode XMLAttr
     Set XMLElement2 = DOM.createElement("text")
     XMLElement1.appendChild XMLElement2
-    Set XMLText = DOM.createTextNode(pText)
-    XMLElement2.appendChild XMLText
+    If pText <> "" Then
+        Set nodeCDATA = DOM.createCDATASection(CleanString(pText))
+        XMLElement2.appendChild nodeCDATA
+    End If
+    
+'    Set XMLText = DOM.createTextNode(pText)
+'    XMLElement2.appendChild XMLText
     pFiles.Export XMLElement1
     Set CreatedElement = XMLElement1
 End Sub
