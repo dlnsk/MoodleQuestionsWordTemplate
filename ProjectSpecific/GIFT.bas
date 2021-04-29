@@ -77,6 +77,7 @@ Public Const STYLE_WRONG_ANSWER = "06.2 НеверныйОтвет"
 
 ' Styles for matching pair questions
 Public Const STYLE_MATCHINGQ = "03. ВопрНаСопоставление"
+Public Const STYLE_DDMATCHQ = "03. ВопрНаСопоставлениеПеретаскиванием"
 Public Const STYLE_LEFT_PAIR = "03.1 Утверждение"
 Public Const STYLE_RIGHT_PAIR = "03.2 ОтветНаУтвержд"
 
@@ -2521,4 +2522,5 @@ Private Function ParseMatchingSubquestion(Question, Answer) As TMatchingSubquest
 
     ParseMatchingSubquestion = MatchingSubquestion
 End Function
+
 

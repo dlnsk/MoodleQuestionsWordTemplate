@@ -15,13 +15,14 @@ Option Explicit
 
 Implements CQuestion
 
+Private pQuestion As CQuestionCommon
 Private pName As String
 Private pQuestiontext As CHTML
 Private pGeneralfeedback As CHTML
 Private pDefaultgrade As Double
 Private pPenalty As Double
 Private pHidden As Boolean
-Private pShuffleanswers As Boolean
+'Private pShuffleanswers As Boolean
 Private pCorrectfeedback As CHTML
 Private pPartiallycorrectfeedback As CHTML
 Private pIncorrectfeedback As CHTML
@@ -30,13 +31,14 @@ Private pSubquestions As Collection
 Private pHints As Collection
 
 Private Sub Class_Initialize()
+    Set pQuestion = New CQuestionCommon
     pName = "-"
     Set pQuestiontext = New CHTML
     Set pGeneralfeedback = New CHTML
     pDefaultgrade = 1
     pPenalty = 0.3333333
     pHidden = False
-    pShuffleanswers = True
+'    pShuffleanswers = True
     Set pCorrectfeedback = New CHTML
     Set pPartiallycorrectfeedback = New CHTML
     Set pIncorrectfeedback = New CHTML
@@ -53,6 +55,7 @@ Private Sub Class_Terminate()
     Set pIncorrectfeedback = Nothing
     Set pSubquestions = Nothing
     Set pHints = Nothing
+    Set pQuestion = Nothing
 End Sub
 
 Public Property Get Name() As String
@@ -103,13 +106,13 @@ End Property
 '    pHidden = NewValue
 'End Property
 
-Public Property Get Shuffleanswers() As Boolean
-    Shuffleanswers = pShuffleanswers
-End Property
-
-Public Property Let Shuffleanswers(ByVal NewValue As Boolean)
-    pShuffleanswers = NewValue
-End Property
+'Public Property Get Shuffleanswers() As Boolean
+'    Shuffleanswers = pShuffleanswers
+'End Property
+'
+'Public Property Let Shuffleanswers(ByVal NewValue As Boolean)
+'    pShuffleanswers = NewValue
+'End Property
 
 Public Property Get Correctfeedback() As CHTML
     Set Correctfeedback = pCorrectfeedback
@@ -159,6 +162,10 @@ Public Property Set Hints(ByVal NewValue As Collection)
     Set pHints = NewValue
 End Property
 
+Public Function CleanText(Text As String)
+    CleanText = pQuestion.CleanText(Text)
+End Function
+
 Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As IXMLDOMElement
     Dim XMLQuestionElement As IXMLDOMElement
@@ -181,7 +188,7 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     XMLQuestionElement.appendChild XMLElement1
     Set XMLElement2 = DOM.createElement("text")
     XMLElement1.appendChild XMLElement2
-    Set XMLText = DOM.createTextNode(pName)
+    Set XMLText = DOM.createTextNode(CleanText(pName))
     XMLElement2.appendChild XMLText
     
     pQuestiontext.Export XMLQuestionElement, "questiontext"
@@ -207,14 +214,14 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     End If
     XMLElement1.appendChild XMLText
     
-    Set XMLElement1 = DOM.createElement("shuffleanswers")
-    XMLQuestionElement.appendChild XMLElement1
-    If pShuffleanswers Then
-        Set XMLText = DOM.createTextNode("1")
-    Else
-        Set XMLText = DOM.createTextNode("0")
-    End If
-    XMLElement1.appendChild XMLText
+'    Set XMLElement1 = DOM.createElement("shuffleanswers")
+'    XMLQuestionElement.appendChild XMLElement1
+'    If pShuffleanswers Then
+'        Set XMLText = DOM.createTextNode("1")
+'    Else
+'        Set XMLText = DOM.createTextNode("0")
+'    End If
+'    XMLElement1.appendChild XMLText
     
     pCorrectfeedback.Export XMLQuestionElement, "correctfeedback"
     pPartiallycorrectfeedback.Export XMLQuestionElement, "partiallycorrectfeedback"
@@ -260,11 +267,11 @@ Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
         pHidden = False
     End If
     
-    If Element.SelectSingleNode("shuffleanswers/text()").NodeValue = "1" Then
-        pShuffleanswers = True
-    Else
-        pShuffleanswers = False
-    End If
+'    If Element.SelectSingleNode("shuffleanswers/text()").NodeValue = "1" Then
+'        pShuffleanswers = True
+'    Else
+'        pShuffleanswers = False
+'    End If
     
     Set pCorrectfeedback = New CHTML
     pCorrectfeedback.Import Element.SelectSingleNode("correctfeedback")

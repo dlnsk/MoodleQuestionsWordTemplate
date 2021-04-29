@@ -99,7 +99,7 @@ Private Function AppendHTML(ByRef Doc As Word.Document, ByRef HTML As CHTML, Sty
     RegExp.Global = True
     RegExp.MultiLine = True
     RegExp.Pattern = "<(""[^""]*""|'[^']*'|[^'"">])*>"
-    If RegExp.Test(HTML.Text) Then
+    If RegExp.test(HTML.Text) Then
         Set Range = AppendHTML2(Doc, HTML)
     Else
         Set Range = AppendText(Doc, HTML.Text)
@@ -235,29 +235,12 @@ Private Sub AppendDdmatch(ByRef Doc As Word.Document, ByRef Question As CDdmatch
     Dim Range As Word.Range
     Dim I As Long
     
-    QuestionType = "На сопоставление"
+    QuestionType = "На сопоставление перетаскиванием"
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText
+        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_DDMATCHQ
         
     If Question.Generalfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Общий комментарий к вопросу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Generalfeedback
-    End If
-
-    If Question.Correctfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Комментарий к верному ответу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Correctfeedback
-    End If
-
-    If Question.Incorrectfeedback.Text <> "" Then
-        Set Range = AppendText(Doc, "Комментарий к неверному ответу: ")
-        Range.Bold = False
-        Range.Italic = True
-        AppendHTML Doc, Question.Incorrectfeedback
+        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
     End If
 
     For I = 1 To Question.Subquestions.Count
@@ -268,21 +251,10 @@ End Sub
 Private Sub AppendDdmatchSubquestion(ByRef Doc As Word.Document, ByRef Subquestion As CDdmatchSubquestion, SubquestionNumber As Long)
     Dim Range As Word.Range
     
-    If Subquestion.Subquestion.Text <> "" Then
-        Set Range = AppendText(Doc, "Подвопрос № " & CStr(SubquestionNumber) & ". ")
-        Range.Bold = True
-        Range.Italic = True
-        AppendHTML Doc, Subquestion.Subquestion
-        Set Range = AppendText(Doc, "Ответ на подвопрос № " & CStr(SubquestionNumber) & ". ")
-        Range.Bold = True
-        Range.Italic = True
-        AppendHTML Doc, Subquestion.Answer
-    Else
-        Set Range = AppendText(Doc, "Неверный ответ. ")
-        Range.Bold = True
-        Range.Italic = True
-        AppendHTML Doc, Subquestion.Answer
-    End If
+    Set Range = AppendHTML(Doc, Subquestion.Subquestion, GIFT.STYLE_LEFT_PAIR)
+    Set Range = AppendHTML(Doc, Subquestion.Answer, GIFT.STYLE_RIGHT_PAIR)
+    Range.Style = GIFT.STYLE_RIGHT_PAIR
+    Doc.Paragraphs.Add
 End Sub
 
 Private Sub AppendEssay(ByRef Doc As Word.Document, ByRef Question As CEssay, QuestionNumber As Long)
