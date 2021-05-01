@@ -19,6 +19,17 @@ Public Function RangeToHTML(ByRef Range As Word.Range)
     Set RangeToHTML = HTML
 End Function
 
+Public Function TidyHTMLFormatng(HTML As String)
+    Dim RegExp As Object
+    
+    Set RegExp = CreateObject("VBScript.RegExp")
+    RegExp.Global = True
+    RegExp.MultiLine = True
+    RegExp.Pattern = "<[^>]*>"
+    
+    TidyHTMLFormatng = CleanString(RegExp.Replace(Text, ""))
+End Function
+
 Private Sub RangeToHTML2(ByRef Range As Word.Range, HTML As String, Images As CFilesCollection)
     Dim Doc As Word.Document
     Dim FilenameBase  As String
