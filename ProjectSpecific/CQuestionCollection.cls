@@ -23,11 +23,11 @@ Private Sub Class_Terminate()
     Set pQuestions = Nothing
 End Sub
 
-Public Sub Add(Question As CQuestion)
+Public Sub Add(Question As IQuestion)
     pQuestions.Add Question
 End Sub
 
-Public Function Item(Index) As CQuestion
+Public Function Item(Index) As IQuestion
     Set Item = pQuestions.Item(Index)
 End Function
 
@@ -37,7 +37,7 @@ End Function
 
 Public Sub Export(XMLFilename As String)
     Dim DOM As MSXML2.DOMDocument60
-    Dim Question As CQuestion
+    Dim Question As IQuestion
     
     Set DOM = CreateDOM
     For Each Question In pQuestions
@@ -83,7 +83,7 @@ End Sub
 
 Private Function GetQuestion(Element As MSXML2.IXMLDOMElement) As Object
     Dim QuestionType As String
-    Dim Question As CQuestion
+    Dim Question As IQuestion
         
     QuestionType = Element.getAttribute("type")
     Select Case QuestionType

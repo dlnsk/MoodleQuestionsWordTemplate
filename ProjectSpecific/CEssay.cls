@@ -13,7 +13,7 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Implements CQuestion
+Implements IQuestion
 
 Public Enum EssayReponseformatOptions
     reponseformat_editor
@@ -41,7 +41,7 @@ Public Enum Essay¿ttachmentsOptions
     attachments_unlimited = -1
 End Enum
 
-Private pQuestion As CQuestionCommon
+Private pQuestion As CQuestion
 Private pName As String
 Private pQuestiontext As CHTML
 Private pGeneralfeedback As CHTML
@@ -55,7 +55,7 @@ Private pGraderinfo As CHTML
 Private pResponsetemplate As CHTML
 
 Private Sub Class_Initialize()
-    Set pQuestion = New CQuestionCommon
+    Set pQuestion = New CQuestion
     pName = "-"
     Set pQuestiontext = New CHTML
     Set pGeneralfeedback = New CHTML

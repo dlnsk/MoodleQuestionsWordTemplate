@@ -14,9 +14,9 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Implements CQuestion
+Implements IQuestion
 
-Private pQuestion As CQuestionCommon
+Private pQuestion As CQuestion
 Private pName As String
 Private pQuestiontext As CHTML
 Private pGeneralfeedback As CHTML
@@ -26,7 +26,7 @@ Private pHidden As Boolean
 
 
 Private Sub Class_Initialize()
-    Set pQuestion = New CQuestionCommon
+    Set pQuestion = New CQuestion
     pName = "-"
     Set pQuestiontext = New CHTML
     Set pGeneralfeedback = New CHTML
