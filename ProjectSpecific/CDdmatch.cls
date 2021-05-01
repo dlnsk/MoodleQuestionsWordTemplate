@@ -17,9 +17,9 @@ Implements IQuestion
 
 Private pQuestion As CQuestion
 Private pName As String
-Private pQuestiontext As CHTML
-Private pGeneralfeedback As CHTML
-Private pDefaultgrade As Double
+Private pQuestionText As CHTML
+Private pGeneralFeedback As CHTML
+Private pDefaultGrade As Double
 Private pPenalty As Double
 Private pHidden As Boolean
 'Private pShuffleanswers As Boolean
@@ -33,9 +33,9 @@ Private pHints As Collection
 Private Sub Class_Initialize()
     Set pQuestion = New CQuestion
     pName = "-"
-    Set pQuestiontext = New CHTML
-    Set pGeneralfeedback = New CHTML
-    pDefaultgrade = 1
+    Set pQuestionText = New CHTML
+    Set pGeneralFeedback = New CHTML
+    pDefaultGrade = 1
     pPenalty = 0.3333333
     pHidden = False
 '    pShuffleanswers = True
@@ -48,8 +48,8 @@ Private Sub Class_Initialize()
 End Sub
 
 Private Sub Class_Terminate()
-    Set pQuestiontext = Nothing
-    Set pGeneralfeedback = Nothing
+    Set pQuestionText = Nothing
+    Set pGeneralFeedback = Nothing
     Set pCorrectfeedback = Nothing
     Set pPartiallycorrectfeedback = Nothing
     Set pIncorrectfeedback = Nothing
@@ -67,27 +67,27 @@ Public Property Let Name(ByVal NewValue As String)
 End Property
 
 Public Property Get QuestionText() As CHTML
-    Set QuestionText = pQuestiontext
+    Set QuestionText = pQuestionText
 End Property
 
 Public Property Set QuestionText(ByVal NewValue As CHTML)
-    Set pQuestiontext = NewValue
+    Set pQuestionText = NewValue
 End Property
 
-Public Property Get Generalfeedback() As CHTML
-    Set Generalfeedback = pGeneralfeedback
+Public Property Get GeneralFeedback() As CHTML
+    Set GeneralFeedback = pGeneralFeedback
 End Property
 
-Public Property Set Generalfeedback(ByVal NewValue As CHTML)
-    Set pGeneralfeedback = NewValue
+Public Property Set GeneralFeedback(ByVal NewValue As CHTML)
+    Set pGeneralFeedback = NewValue
 End Property
 
-Public Property Get Defaultgrade() As Double
-    Defaultgrade = pDefaultgrade
+Public Property Get DefaultGrade() As Double
+    DefaultGrade = pDefaultGrade
 End Property
 
-Public Property Let Defaultgrade(ByVal NewValue As Double)
-    pDefaultgrade = NewValue
+Public Property Let DefaultGrade(ByVal NewValue As Double)
+    pDefaultGrade = NewValue
 End Property
 
 Public Property Get Penalty() As Double
@@ -191,13 +191,13 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Set XMLText = DOM.createTextNode(CleanText(pName))
     XMLElement2.appendChild XMLText
     
-    pQuestiontext.Export XMLQuestionElement, "questiontext"
+    pQuestionText.Export XMLQuestionElement, "questiontext"
     
-    pGeneralfeedback.Export XMLQuestionElement, "generalfeedback"
+    pGeneralFeedback.Export XMLQuestionElement, "generalfeedback"
     
     Set XMLElement1 = DOM.createElement("defaultgrade")
     XMLQuestionElement.appendChild XMLElement1
-    Set XMLText = DOM.createTextNode(Replace(Format(pDefaultgrade, "###0.0000000"), ",", "."))
+    Set XMLText = DOM.createTextNode(Replace(Format(pDefaultGrade, "###0.0000000"), ",", "."))
     XMLElement1.appendChild XMLText
     
     Set XMLElement1 = DOM.createElement("penalty")
@@ -251,13 +251,13 @@ Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
     
     pName = Element.SelectSingleNode("name/text/text()").NodeValue
     
-    Set pQuestiontext = New CHTML
-    pQuestiontext.Import Element.SelectSingleNode("questiontext")
+    Set pQuestionText = New CHTML
+    pQuestionText.Import Element.SelectSingleNode("questiontext")
     
-    Set pGeneralfeedback = New CHTML
-    pGeneralfeedback.Import Element.SelectSingleNode("generalfeedback")
+    Set pGeneralFeedback = New CHTML
+    pGeneralFeedback.Import Element.SelectSingleNode("generalfeedback")
     
-    pDefaultgrade = CDbl(Replace(Element.SelectSingleNode("defaultgrade/text()").NodeValue, ".", Separator))
+    pDefaultGrade = CDbl(Replace(Element.SelectSingleNode("defaultgrade/text()").NodeValue, ".", Separator))
     
     pPenalty = CDbl(Replace(Element.SelectSingleNode("penalty/text()").NodeValue, ".", Separator))
     

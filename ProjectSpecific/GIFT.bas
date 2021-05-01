@@ -163,7 +163,7 @@ Public Type TParseText
     Text As String
     Name As String
     Shuffleanswers As Boolean
-    Defaultgrade As Double
+    DefaultGrade As Double
     file As Boolean 'для эссе
 End Type
 
@@ -1861,7 +1861,7 @@ Dim ncut As String
                     
                     Set QDescription = New CDescription
                     Set QDescription.QuestionText = GetCHTML(Text)
-                    Set QDescription.Generalfeedback = GetCHTML(Feedback)
+                    Set QDescription.GeneralFeedback = GetCHTML(Feedback)
                     Text = QDescription.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
@@ -1904,13 +1904,13 @@ Dim ncut As String
                 
                     Set QShortanswer = New CShortanswer
                     Set QShortanswer.QuestionText = GetCHTML(Text)
-                    Set QShortanswer.Generalfeedback = GetCHTML(Feedback)
+                    Set QShortanswer.GeneralFeedback = GetCHTML(Feedback)
                     Text = QShortanswer.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
                     QShortanswer.Name = TXT.Name
                     QShortanswer.QuestionText.Text = "<p>" + TXT.Text + "</p>"
-                    QShortanswer.Defaultgrade = TXT.Defaultgrade
+                    QShortanswer.DefaultGrade = TXT.DefaultGrade
 
                     QShortanswer.Answers.Add AShortanswer
                     Questions.Add QShortanswer
@@ -1935,13 +1935,13 @@ Dim ncut As String
                     
                     Set QEssay = New CEssay
                     Set QEssay.QuestionText = GetCHTML(Text)
-                    Set QEssay.Generalfeedback = GetCHTML(Feedback)
+                    Set QEssay.GeneralFeedback = GetCHTML(Feedback)
                     Text = QEssay.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
                     QEssay.Name = TXT.Name
                     QEssay.QuestionText.Text = "<p>" + TXT.Text + "</p>"
-                    QEssay.Defaultgrade = TXT.Defaultgrade
+                    QEssay.DefaultGrade = TXT.DefaultGrade
                     If TXT.file = True Then QEssay.Attachments = 1
                     'Questions.Add QEssay
                 End If
@@ -1960,13 +1960,13 @@ Dim ncut As String
                     
                     Set QTrueFalse = New CTrueFalse
                     Set QTrueFalse.QuestionText = GetCHTML(Text)
-                    Set QTrueFalse.Generalfeedback = GetCHTML(Feedback)
+                    Set QTrueFalse.GeneralFeedback = GetCHTML(Feedback)
                     Text = QTrueFalse.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
                     QTrueFalse.Name = TXT.Name
                     QTrueFalse.QuestionText.Text = "<p>" + TXT.Text + "</p>"
-                    QTrueFalse.Defaultgrade = TXT.Defaultgrade
+                    QTrueFalse.DefaultGrade = TXT.DefaultGrade
                 End If
             '===Конец truefalse===
             
@@ -1985,13 +1985,13 @@ Dim ncut As String
                 
                     Set QNumerical = New CNumerical
                     Set QNumerical.QuestionText = GetCHTML(Text)
-                    Set QNumerical.Generalfeedback = GetCHTML(Feedback)
+                    Set QNumerical.GeneralFeedback = GetCHTML(Feedback)
                     Text = QNumerical.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
                     QNumerical.Name = TXT.Name
                     QNumerical.QuestionText.Text = "<p>" + TXT.Text + "</p>"
-                    QNumerical.Defaultgrade = TXT.Defaultgrade
+                    QNumerical.DefaultGrade = TXT.DefaultGrade
                 End If
             '===Конец числовые вопросы===
             '===XML мультивыбор===
@@ -2009,13 +2009,13 @@ Dim ncut As String
                 
                     Set QMultichoice = New CMultichoice
                     Set QMultichoice.QuestionText = GetCHTML(Text)
-                    Set QMultichoice.Generalfeedback = GetCHTML(Feedback)
+                    Set QMultichoice.GeneralFeedback = GetCHTML(Feedback)
                     Text = QMultichoice.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
                     QMultichoice.Name = TXT.Name
                     QMultichoice.QuestionText.Text = "<p>" + TXT.Text + "</p>"
-                    QMultichoice.Defaultgrade = TXT.Defaultgrade
+                    QMultichoice.DefaultGrade = TXT.DefaultGrade
                     QMultichoice.Singleanswer = True
                     QMultichoice.Shuffleanswers = TXT.Shuffleanswers
                 End If
@@ -2035,13 +2035,13 @@ Dim ncut As String
                 
                     Set QShortanswer = New CShortanswer
                     Set QShortanswer.QuestionText = GetCHTML(Text)
-                    Set QShortanswer.Generalfeedback = GetCHTML(Feedback)
+                    Set QShortanswer.GeneralFeedback = GetCHTML(Feedback)
                     Text = QShortanswer.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
                     QShortanswer.Name = TXT.Name
                     QShortanswer.QuestionText.Text = "<p>" + TXT.Text + "</p>"
-                    QShortanswer.Defaultgrade = TXT.Defaultgrade
+                    QShortanswer.DefaultGrade = TXT.DefaultGrade
                 End If
             '===Конец короткий ответ===
             
@@ -2061,13 +2061,13 @@ Dim ncut As String
                 
                     Set QMatching = New CMatching
                     Set QMatching.QuestionText = GetCHTML(Text)
-                    Set QMatching.Generalfeedback = GetCHTML(Feedback)
+                    Set QMatching.GeneralFeedback = GetCHTML(Feedback)
                     Text = QMatching.QuestionText.Text
                     Text = Mid(Text, 4, Len(Text) - 7)
                     TXT = ParseText(Text)
                     QMatching.Name = TXT.Name
                     QMatching.QuestionText.Text = "<p>" + TXT.Text + "</p>"
-                    QMatching.Defaultgrade = TXT.Defaultgrade
+                    QMatching.DefaultGrade = TXT.DefaultGrade
                     QMatching.Shuffleanswers = TXT.Shuffleanswers
                 End If
             '===Конец сопоставление===
@@ -2380,7 +2380,7 @@ Private Function ParseText(Text) As TParseText
     'Поиск веса вопроса
     If InStr(1, Text, "[", vbTextCompare) > 0 And InStr(InStr(1, Text, "[", vbTextCompare) + 1, Text, "]", vbTextCompare) > 0 Then
         If IsNumeric(Mid(Text, InStr(1, Text, "[", vbTextCompare) + 1, InStr(InStr(1, Text, "[", vbTextCompare) + 1, Text, "]", vbTextCompare) - InStr(1, Text, "[", vbTextCompare) - 1)) Then
-            TXT.Defaultgrade = CDbl(Replace(Mid(Text, InStr(1, Text, "[", vbTextCompare) + 1, InStr(InStr(1, Text, "[", vbTextCompare) + 1, Text, "]", vbTextCompare) - InStr(1, Text, "[", vbTextCompare) - 1), ".", Separator))
+            TXT.DefaultGrade = CDbl(Replace(Mid(Text, InStr(1, Text, "[", vbTextCompare) + 1, InStr(InStr(1, Text, "[", vbTextCompare) + 1, Text, "]", vbTextCompare) - InStr(1, Text, "[", vbTextCompare) - 1), ".", Separator))
             Text = Replace(Text, "[" & Mid(Text, InStr(1, Text, "[", vbTextCompare) + 1, InStr(InStr(1, Text, "[", vbTextCompare) + 1, Text, "]", vbTextCompare) - InStr(1, Text, "[", vbTextCompare) - 1) & "]", "")
             'MsgBox str(TXT.Defaultgrade)
         End If

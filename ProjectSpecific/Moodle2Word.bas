@@ -237,10 +237,10 @@ Private Sub AppendDdmatch(ByRef Doc As Word.Document, ByRef Question As CDdmatch
     
     QuestionType = "На сопоставление перетаскиванием"
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_DDMATCHQ
+        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_DDMATCHQ
         
-    If Question.Generalfeedback.Text <> "" Then
-        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
+    If Question.GeneralFeedback.Text <> "" Then
+        AppendHTML Doc, Question.GeneralFeedback, GIFT.STYLE_FEEDBACK
     End If
 
     For I = 1 To Question.Subquestions.Count
@@ -265,10 +265,10 @@ Private Sub AppendEssay(ByRef Doc As Word.Document, ByRef Question As CEssay, Qu
     QuestionType = "Эссе"
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_ESSAYQ
+        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_ESSAYQ
         
-    If Question.Generalfeedback.Text <> "" Then
-        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
+    If Question.GeneralFeedback.Text <> "" Then
+        AppendHTML Doc, Question.GeneralFeedback, GIFT.STYLE_FEEDBACK
     End If
 
     If Question.Responsetemplate.Text <> "" Then
@@ -288,10 +288,10 @@ Private Sub AppendMatching(ByRef Doc As Word.Document, ByRef Question As CMatchi
     
     QuestionType = "На сопоставление"
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_MATCHINGQ
+        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_MATCHINGQ
         
-    If Question.Generalfeedback.Text <> "" Then
-        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
+    If Question.GeneralFeedback.Text <> "" Then
+        AppendHTML Doc, Question.GeneralFeedback, GIFT.STYLE_FEEDBACK
     End If
 
 '    If Question.Correctfeedback.Text <> "" Then
@@ -327,10 +327,10 @@ Private Sub AppendDescription(ByRef Doc As Word.Document, ByRef Question As CDes
     Dim Range As Word.Range
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_DESCRIPTIONQ
+        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_DESCRIPTIONQ
         
-    If Question.Generalfeedback.Text <> "" Then
-        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
+    If Question.GeneralFeedback.Text <> "" Then
+        AppendHTML Doc, Question.GeneralFeedback, GIFT.STYLE_FEEDBACK
     End If
 End Sub
 
@@ -346,10 +346,10 @@ Private Sub AppendMultichoice(ByRef Doc As Word.Document, ByRef Question As CMul
 '    End If
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_MULTIPLECHOICEQ
+        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_MULTIPLECHOICEQ
         
-    If Question.Generalfeedback.Text <> "" Then
-        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
+    If Question.GeneralFeedback.Text <> "" Then
+        AppendHTML Doc, Question.GeneralFeedback, GIFT.STYLE_FEEDBACK
     End If
 
 '    If Question.Correctfeedback.Text <> "" Then
@@ -403,10 +403,10 @@ Private Sub AppendNumerical(ByRef Doc As Word.Document, ByRef Question As CNumer
     QuestionType = "Числовой ответ"
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_NUMERICALQ
+        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_NUMERICALQ
         
-    If Question.Generalfeedback.Text <> "" Then
-        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
+    If Question.GeneralFeedback.Text <> "" Then
+        AppendHTML Doc, Question.GeneralFeedback, GIFT.STYLE_FEEDBACK
     End If
 
     For I = 1 To Question.Answers.Count
@@ -458,13 +458,13 @@ Private Sub AppendOrder(ByRef Doc As Word.Document, ByRef Question As COrder, Qu
     QuestionType = "На упорядочивание"
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText
+        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText
         
-    If Question.Generalfeedback.Text <> "" Then
+    If Question.GeneralFeedback.Text <> "" Then
         Set Range = AppendText(Doc, "Общий комментарий к вопросу: ")
         Range.Bold = False
         Range.Italic = True
-        AppendHTML Doc, Question.Generalfeedback
+        AppendHTML Doc, Question.GeneralFeedback
     End If
 
     If Question.Correctfeedback.Text <> "" Then
@@ -508,10 +508,10 @@ Private Sub AppendShortanswer(ByRef Doc As Word.Document, ByRef Question As CSho
     End If
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_SHORTANSWERQ
+        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText, Style:=GIFT.STYLE_SHORTANSWERQ
         
-    If Question.Generalfeedback.Text <> "" Then
-        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
+    If Question.GeneralFeedback.Text <> "" Then
+        AppendHTML Doc, Question.GeneralFeedback, GIFT.STYLE_FEEDBACK
     End If
 
     For I = 1 To Question.Answers.Count
@@ -554,10 +554,10 @@ Private Sub AppendTruefalse(ByRef Doc As Word.Document, ByRef Question As CTrueF
     End If
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.Defaultgrade, QuestionText:=Question.QuestionText, Style:=QuestionType
+        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText, Style:=QuestionType
         
-    If Question.Generalfeedback.Text <> "" Then
-        AppendHTML Doc, Question.Generalfeedback, GIFT.STYLE_FEEDBACK
+    If Question.GeneralFeedback.Text <> "" Then
+        AppendHTML Doc, Question.GeneralFeedback, GIFT.STYLE_FEEDBACK
     End If
     
     Set IgnoreMessage = New CHTML
