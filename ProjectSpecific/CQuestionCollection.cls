@@ -37,7 +37,7 @@ End Function
 
 Public Sub Export(XMLFilename As String)
     Dim DOM As MSXML2.DOMDocument60
-    Dim Question As IQuestion
+    Dim Question As IExportable
     
     Set DOM = CreateDOM
     For Each Question In pQuestions
@@ -83,7 +83,7 @@ End Sub
 
 Private Function GetQuestion(Element As MSXML2.IXMLDOMElement) As Object
     Dim QuestionType As String
-    Dim Question As IQuestion
+    Dim Question As IExportable
         
     QuestionType = Element.getAttribute("type")
     Select Case QuestionType

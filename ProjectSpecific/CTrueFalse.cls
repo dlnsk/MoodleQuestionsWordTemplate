@@ -15,6 +15,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Implements IQuestion
+Implements IExportable
 
 Private pQuestion As CQuestion
 Private pName As String
@@ -132,7 +133,7 @@ Public Property Let FalseFeedback(ByRef NewValue As CHTML)
     pAnswerFalse.Feedback = NewValue
 End Property
 
-Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
+Public Sub IExportable_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As IXMLDOMElement
     Dim XMLQuestionElement As IXMLDOMElement
     Dim XMLElement1 As IXMLDOMElement
@@ -182,7 +183,7 @@ Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     pAnswerFalse.Export XMLQuestionElement
 End Sub
 
-Public Sub IQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+Public Sub IExportable_Import(ByRef Element As MSXML2.IXMLDOMElement)
     Dim Nodes As MSXML2.IXMLDOMNodeList
     Dim Node As MSXML2.IXMLDOMNode
     Dim Answer As CMultichoiceAnswer

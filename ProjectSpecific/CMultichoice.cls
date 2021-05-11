@@ -14,6 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Implements IQuestion
+Implements IExportable
 
 Public Enum MultichoiceAnswernumberingOptions
     numbering_abc
@@ -191,7 +192,7 @@ Public Property Set Hints(ByVal NewValue As Collection)
     Set pHints = NewValue
 End Property
 
-Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
+Public Sub IExportable_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As IXMLDOMElement
     Dim XMLQuestionElement As IXMLDOMElement
     Dim XMLElement1 As IXMLDOMElement
@@ -293,7 +294,7 @@ Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Next Hint
 End Sub
 
-Public Sub IQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+Public Sub IExportable_Import(ByRef Element As MSXML2.IXMLDOMElement)
     Dim Nodes As MSXML2.IXMLDOMNodeList
     Dim Node As MSXML2.IXMLDOMNode
     Dim Answer As CMultichoiceAnswer

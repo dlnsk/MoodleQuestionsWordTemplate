@@ -12,6 +12,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Implements IQuestion
+Implements IExportable
 
 Private pName As String
 Private pQuestionText As CHTML
@@ -104,10 +105,10 @@ Public Property Set Hints(ByVal NewValue As Collection)
     Set pHints = NewValue
 End Property
 
-Private Sub IQuestion_Export(DOM As MSXML2.IXMLDOMDocument3)
+Private Sub IExportable_Export(DOM As MSXML2.IXMLDOMDocument3)
 
 End Sub
 
-Private Sub IQuestion_Import(Element As MSXML2.IXMLDOMElement)
+Private Sub IExportable_Import(Element As MSXML2.IXMLDOMElement)
 
 End Sub

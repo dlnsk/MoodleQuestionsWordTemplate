@@ -14,6 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Implements IQuestion
+Implements IExportable
 
 Public Enum EssayReponseformatOptions
     reponseformat_editor
@@ -165,7 +166,7 @@ Public Property Let Responsetemplate(ByVal NewValue As CHTML)
     Set pResponsetemplate = NewValue
 End Property
 
-Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
+Public Sub IExportable_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As IXMLDOMElement
     Dim XMLQuestionElement As IXMLDOMElement
     Dim XMLElement1 As IXMLDOMElement
@@ -240,7 +241,7 @@ Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     pResponsetemplate.Export XMLQuestionElement, "responsetemplate"
 End Sub
 
-Public Sub IQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+Public Sub IExportable_Import(ByRef Element As MSXML2.IXMLDOMElement)
     
     Dim Nodes As MSXML2.IXMLDOMNodeList
     Dim Node As MSXML2.IXMLDOMNode

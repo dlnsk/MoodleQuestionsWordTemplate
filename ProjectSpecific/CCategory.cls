@@ -14,6 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Implements IQuestion
+Implements IExportable
 
 Private pQuestion As CQuestion
 Private pName As String
@@ -34,7 +35,7 @@ Public Property Let Name(ByVal NewValue As String)
     pName = NewValue
 End Property
 
-Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
+Public Sub IExportable_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As MSXML2.IXMLDOMElement
     Dim XMLQuestionElement As MSXML2.IXMLDOMElement
     Dim XMLCategoryElement As MSXML2.IXMLDOMElement
@@ -61,6 +62,6 @@ Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     XMLTextElement.appendChild XMLText
 End Sub
 
-Public Sub IQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+Public Sub IExportable_Import(ByRef Element As MSXML2.IXMLDOMElement)
     pName = Element.SelectSingleNode("category/text/text()").NodeValue
 End Sub
