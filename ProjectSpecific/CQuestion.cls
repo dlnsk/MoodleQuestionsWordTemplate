@@ -38,7 +38,6 @@ Private Sub Class_Terminate()
     Set pGeneralFeedback = Nothing
     Set pAnswers = Nothing
     Set pHints = Nothing
-    Set pQuestion = Nothing
 End Sub
 
 Public Property Get Name() As String
@@ -105,3 +104,10 @@ Public Property Set Hints(ByVal NewValue As Collection)
     Set pHints = NewValue
 End Property
 
+Private Sub IQuestion_Export(DOM As MSXML2.IXMLDOMDocument3)
+
+End Sub
+
+Private Sub IQuestion_Import(Element As MSXML2.IXMLDOMElement)
+
+End Sub

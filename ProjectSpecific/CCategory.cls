@@ -34,11 +34,7 @@ Public Property Let Name(ByVal NewValue As String)
     pName = NewValue
 End Property
 
-Public Function CleanText(Text As String)
-    CleanText = pQuestion.CleanText(Text)
-End Function
-
-Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
+Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As MSXML2.IXMLDOMElement
     Dim XMLQuestionElement As MSXML2.IXMLDOMElement
     Dim XMLCategoryElement As MSXML2.IXMLDOMElement
@@ -61,10 +57,10 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Set XMLTextElement = DOM.createElement("text")
     XMLCategoryElement.appendChild XMLTextElement
     
-    Set XMLText = DOM.createTextNode(CleanText(pName))
+    Set XMLText = DOM.createTextNode(RangeToHTML.TidyHTMLFormatng(pName))
     XMLTextElement.appendChild XMLText
 End Sub
 
-Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+Public Sub IQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
     pName = Element.SelectSingleNode("category/text/text()").NodeValue
 End Sub

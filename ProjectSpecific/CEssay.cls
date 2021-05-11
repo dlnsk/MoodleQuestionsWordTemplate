@@ -165,11 +165,7 @@ Public Property Let Responsetemplate(ByVal NewValue As CHTML)
     Set pResponsetemplate = NewValue
 End Property
 
-Public Function CleanText(Text As String)
-    CleanText = pQuestion.CleanText(Text)
-End Function
-
-Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
+Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As IXMLDOMElement
     Dim XMLQuestionElement As IXMLDOMElement
     Dim XMLElement1 As IXMLDOMElement
@@ -189,7 +185,7 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     XMLQuestionElement.appendChild XMLElement1
     Set XMLElement2 = DOM.createElement("text")
     XMLElement1.appendChild XMLElement2
-    Set XMLText = DOM.createTextNode(CleanText(pName))
+    Set XMLText = DOM.createTextNode(RangeToHTML.TidyHTMLFormatng(pName))
     XMLElement2.appendChild XMLText
     
     QuestionText.Export XMLQuestionElement, "questiontext"
@@ -244,7 +240,7 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     pResponsetemplate.Export XMLQuestionElement, "responsetemplate"
 End Sub
 
-Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+Public Sub IQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
     
     Dim Nodes As MSXML2.IXMLDOMNodeList
     Dim Node As MSXML2.IXMLDOMNode

@@ -81,10 +81,6 @@ Public Property Let Penalty(ByVal NewValue As Double)
     pPenalty = NewValue
 End Property
 
-Public Function CleanText(Text As String)
-    CleanText = pQuestion.CleanText(Text)
-End Function
-
 'Public Property Get Hidden() As Boolean
 '    Hidden = pHidden
 'End Property
@@ -93,7 +89,7 @@ End Function
 '    pHidden = NewValue
 'End Property
 
-Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
+Public Sub IQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     Dim XMLRootElement As IXMLDOMElement
     Dim XMLQuestionElement As IXMLDOMElement
     Dim XMLElement1 As IXMLDOMElement
@@ -113,7 +109,7 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
     XMLQuestionElement.appendChild XMLElement1
     Set XMLElement2 = DOM.createElement("text")
     XMLElement1.appendChild XMLElement2
-    Set XMLText = DOM.createTextNode(CleanText(pName))
+    Set XMLText = DOM.createTextNode(RangeToHTML.TidyHTMLFormatng(pName))
     XMLElement2.appendChild XMLText
     
     pQuestionText.Export XMLQuestionElement, "questiontext"
@@ -141,7 +137,7 @@ Public Sub CQuestion_Export(ByRef DOM As MSXML2.DOMDocument60)
 
 End Sub
 
-Public Sub CQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
+Public Sub IQuestion_Import(ByRef Element As MSXML2.IXMLDOMElement)
     Dim Nodes As MSXML2.IXMLDOMNodeList
     Dim Node As MSXML2.IXMLDOMNode
     Dim Answer As CMultichoiceAnswer

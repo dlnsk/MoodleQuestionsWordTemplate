@@ -458,27 +458,27 @@ Private Sub AppendOrder(ByRef Doc As Word.Document, ByRef Question As COrder, Qu
     QuestionType = "На упорядочивание"
     
     AppendQuestionText Doc:=Doc, QuestionNumber:=QuestionNumber, QuestionType:=QuestionType, _
-        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText
+        QuestionGrade:=Question.DefaultGrade, QuestionText:=Question.QuestionText, Style:="dummy"
         
     If Question.GeneralFeedback.Text <> "" Then
         Set Range = AppendText(Doc, "Общий комментарий к вопросу: ")
         Range.Bold = False
         Range.Italic = True
-        AppendHTML Doc, Question.GeneralFeedback
+        AppendHTML Doc, Question.GeneralFeedback, GIFT.STYLE_FEEDBACK
     End If
 
     If Question.Correctfeedback.Text <> "" Then
         Set Range = AppendText(Doc, "Комментарий к верному ответу: ")
         Range.Bold = False
         Range.Italic = True
-        AppendHTML Doc, Question.Correctfeedback
+        AppendHTML Doc, Question.Correctfeedback, GIFT.STYLE_FEEDBACK
     End If
 
     If Question.Incorrectfeedback.Text <> "" Then
         Set Range = AppendText(Doc, "Комментарий к неверному ответу: ")
         Range.Bold = False
         Range.Italic = True
-        AppendHTML Doc, Question.Incorrectfeedback
+        AppendHTML Doc, Question.Incorrectfeedback, GIFT.STYLE_FEEDBACK
     End If
 
     For I = 1 To Question.Subquestions.Count
@@ -492,7 +492,7 @@ Private Sub AppendOrderSubquestion(ByRef Doc As Word.Document, ByRef Subquestion
     Set Range = AppendText(Doc, "Ответ №" & Subquestion.Order & ". ")
     Range.Bold = True
     Range.Italic = True
-    Set Range = AppendHTML(Doc, Subquestion.Subquestion)
+    Set Range = AppendHTML(Doc, Subquestion.Subquestion, GIFT.STYLE_RIGHT_ANSWER)
 End Sub
 
 Private Sub AppendShortanswer(ByRef Doc As Word.Document, ByRef Question As CShortanswer, QuestionNumber As Long)

@@ -27,7 +27,7 @@ Public Function TidyHTMLFormatng(HTML As String)
     RegExp.MultiLine = True
     RegExp.Pattern = "<[^>]*>"
     
-    TidyHTMLFormatng = CleanString(RegExp.Replace(Text, ""))
+    TidyHTMLFormatng = CleanString(RegExp.Replace(HTML, ""))
 End Function
 
 Private Sub RangeToHTML2(ByRef Range As Word.Range, HTML As String, Images As CFilesCollection)
