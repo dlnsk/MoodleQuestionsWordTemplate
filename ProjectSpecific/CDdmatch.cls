@@ -25,6 +25,7 @@ Private pSubquestions As Collection
 
 Private Sub Class_Initialize()
     Set pQuestion = New CQuestion
+    pQuestion.QType = "ddmatch"
     Set pCorrectfeedback = New CHTML
     Set pPartiallycorrectfeedback = New CHTML
     Set pIncorrectfeedback = New CHTML

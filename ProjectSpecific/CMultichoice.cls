@@ -36,6 +36,7 @@ Private pShownumcorrect As Boolean
 
 Private Sub Class_Initialize()
     Set pQuestion = New CQuestion
+    pQuestion.QType = "multichoice"
     pSingleanswer = True
     pShuffleanswers = True
     pAnswernumbering = MultichoiceAnswernumberingOptions.numbering_abc

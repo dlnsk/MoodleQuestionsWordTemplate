@@ -51,6 +51,7 @@ Private pResponsetemplate As CHTML
 
 Private Sub Class_Initialize()
     Set pQuestion = New CQuestion
+    pQuestion.QType = "essay"
     pResponseformat = EssayReponseformatOptions.reponseformat_editor
     pResponsefieldlines = EssayResponsefieldlinesOptions.responsefieldlines_15
     pAttachments = Essay¿ttachmentsOptions.attachments_0

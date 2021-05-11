@@ -22,6 +22,7 @@ Private pQuestion As CQuestion
 
 Private Sub Class_Initialize()
     Set pQuestion = New CQuestion
+    pQuestion.QType = "description"
 End Sub
 
 Private Sub Class_Terminate()

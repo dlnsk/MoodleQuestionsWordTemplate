@@ -21,6 +21,7 @@ Private pUsecase As Boolean
 
 Private Sub Class_Initialize()
     Set pQuestion = New CQuestion
+    pQuestion.QType = "shortanswer"
     pUsecase = False
 End Sub
 

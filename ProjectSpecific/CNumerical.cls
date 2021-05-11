@@ -50,6 +50,7 @@ Private pUnitposition  As Long
 
 Private Sub Class_Initialize()
     Set pQuestion = New CQuestion
+    pQuestion.QType = "numerical"
     Set pUnits = New Collection
     Unitrole = NumericalUnitroleOptions.Unitrole_onlynumerical
     pUnitpenalty = 0.1

@@ -23,6 +23,7 @@ Private pAnswerFalse As CShortanswerAnswer
 
 Private Sub Class_Initialize()
     Set pQuestion = New CQuestion
+    pQuestion.QType = "truefalse"
     Set pAnswerTrue = New CShortanswerAnswer
     pAnswerTrue.Text = "true"
     pAnswerTrue.Fraction = 100

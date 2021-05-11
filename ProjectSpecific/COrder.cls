@@ -26,6 +26,7 @@ Private pSubquestions As Collection
 
 Private Sub Class_Initialize()
     Set pQuestion = New CQuestion
+    pQuestion.QType = "order"
     pHorizontal = False
     Set pCorrectfeedback = New CHTML
     Set pPartiallycorrectfeedback = New CHTML
