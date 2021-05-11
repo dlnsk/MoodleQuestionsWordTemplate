@@ -44,13 +44,115 @@ Private Sub Class_Terminate()
     Set pHints = Nothing
 End Sub
 
-Private Sub IExportable_Export(DOM As MSXML2.IXMLDOMDocument3)
-
+Public Sub Export(ByRef DOM As MSXML2.DOMDocument60)
+    Dim XMLRootElement As IXMLDOMElement
+    Dim XMLQuestionElement As IXMLDOMElement
+    Dim XMLElement1 As IXMLDOMElement
+    Dim XMLElement2 As IXMLDOMElement
+    Dim XMLText As IXMLDOMText
+    Dim XMLAttr As IXMLDOMAttribute
+    Dim Answer As CMultichoiceAnswer
+    Dim Hint As CHint
+    
+    Set XMLRootElement = DOM.DocumentElement
+    
+    Set XMLQuestionElement = DOM.createElement("question")
+    XMLRootElement.appendChild XMLQuestionElement
+    Set XMLAttr = DOM.createAttribute("type")
+    XMLAttr.NodeValue = pQType
+    XMLQuestionElement.setAttributeNode XMLAttr
+    
+    Set XMLElement1 = DOM.createElement("name")
+    XMLQuestionElement.appendChild XMLElement1
+    Set XMLElement2 = DOM.createElement("text")
+    XMLElement1.appendChild XMLElement2
+    Set XMLText = DOM.createTextNode(RangeToHTML.TidyHTMLFormatng(pName))
+    XMLElement2.appendChild XMLText
+    
+    pQuestionText.Export XMLQuestionElement, "questiontext"
+    
+    pGeneralFeedback.Export XMLQuestionElement, "generalfeedback"
+    
+    Set XMLElement1 = DOM.createElement("defaultgrade")
+    XMLQuestionElement.appendChild XMLElement1
+    Set XMLText = DOM.createTextNode(Replace(Format(pDefaultGrade, "###0.0000000"), ",", "."))
+    XMLElement1.appendChild XMLText
+    
+    Set XMLElement1 = DOM.createElement("penalty")
+    XMLQuestionElement.appendChild XMLElement1
+    Set XMLText = DOM.createTextNode(Replace(Format(pPenalty, "###0.0000000"), ",", "."))
+    XMLElement1.appendChild XMLText
+    
+    Set XMLElement1 = DOM.createElement("hidden")
+    XMLQuestionElement.appendChild XMLElement1
+    If pHidden Then
+        Set XMLText = DOM.createTextNode(1)
+    Else
+        Set XMLText = DOM.createTextNode(0)
+    End If
+    XMLElement1.appendChild XMLText
+    
+    For Each Answer In pAnswers
+        Answer.Export XMLQuestionElement
+    Next Answer
+    
+    For Each Hint In pHints
+        Hint.Export XMLQuestionElement
+    Next Hint
 End Sub
 
-Private Sub IExportable_Import(Element As MSXML2.IXMLDOMElement)
+Public Sub Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Dim Nodes As MSXML2.IXMLDOMNodeList
+    Dim Node As MSXML2.IXMLDOMNode
+    Dim Answer As CMultichoiceAnswer
+    Dim Hint As CHint
+    Dim Separator As String
+    Separator = Replace(Format(0, "0.0"), "0", "")
+    
+    pName = Element.SelectSingleNode("name/text/text()").NodeValue
+    
+    Set pQuestionText = New CHTML
+    pQuestionText.Import Element.SelectSingleNode("questiontext")
+    
+    Set pGeneralFeedback = New CHTML
+    pGeneralFeedback.Import Element.SelectSingleNode("generalfeedback")
+    
+    pDefaultGrade = CDbl(Replace(Element.SelectSingleNode("defaultgrade/text()").NodeValue, ".", Separator))
+    
+    pPenalty = CDbl(Replace(Element.SelectSingleNode("penalty/text()").NodeValue, ".", Separator))
+    
+    If Element.SelectSingleNode("hidden/text()").NodeValue = "1" Then
+        pHidden = True
+    Else
+        pHidden = False
+    End If
+    
+    
+    Set pAnswers = New Collection
+    Set Nodes = Element.SelectNodes("answer")
+    For Each Node In Nodes
+        Set Answer = New CMultichoiceAnswer
+        Answer.Import Node
+        pAnswers.Add Answer
+    Next
 
+    Set pHints = New Collection
+    Set Nodes = Element.SelectNodes("hint")
+    For Each Node In Nodes
+        Set Hint = New CHint
+        Hint.Import Node
+        pHints.Add Hint
+    Next
 End Sub
+
+Public Sub IExportable_Export(ByRef DOM As MSXML2.DOMDocument60)
+    Export DOM
+End Sub
+
+Public Sub IExportable_Import(ByRef Element As MSXML2.IXMLDOMElement)
+    Import Element
+End Sub
+
 
 
 '=================== Class's own properties folowing interface IQuestion ========================
