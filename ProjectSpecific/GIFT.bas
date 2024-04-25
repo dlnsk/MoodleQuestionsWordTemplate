@@ -2354,6 +2354,7 @@ End Function
 Private Function ParseText(Text) As TParseText
 
     Dim TXT As TParseText
+    Dim strCount As String
     Dim Separator As String
     
     Separator = Replace(Format(0, "0.0"), "0", "")
@@ -2409,6 +2410,12 @@ Private Function ParseText(Text) As TParseText
         Else
             TXT.Name = Left(Text, 100) & "..."
         End If
+        strCount = ""
+        If Questions.Count + 1 < 10 Then
+            strCount = "0"
+        End If
+        strCount = strCount & (Questions.Count + 1)
+        TXT.Name = strCount & " " & TXT.Name
     End If
 
     TXT.Text = Text
