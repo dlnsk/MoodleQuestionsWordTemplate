@@ -212,6 +212,7 @@ Const TAG_FEEDBACK = "#"
 Const TAG_FEEDBACK2 = "####"
 
 Dim Questions As CQuestionCollection
+Dim QuestionsCount As Integer
     
 
 Public Sub About()
@@ -255,7 +256,7 @@ Dim formatIsOK As Boolean
         prefix = Left(Para.Range.Text, 2)
         If prefix = "I:" Then
             TXT = Para.Range.Text
-            TXT = Trim(right(TXT, Len(TXT) - 2))
+            TXT = Trim(Right(TXT, Len(TXT) - 2))
             qName = Left(TXT, Len(TXT) - 1)
             Para.Range.Delete
         End If
@@ -1618,7 +1619,7 @@ Dim adoc As Document, Doc As Document
             'Выдергиваем имя файла
             start = InStrRev(src, "\")
             If start > 0 Then
-                fname = right(src, Len(src) - start)
+                fname = Right(src, Len(src) - start)
             End If
             
             FileCopy m_inputDir & "\" & src, m_outputDir & "\" & fname
@@ -1703,7 +1704,7 @@ End Function
 
 Private Function imgBase64(Filename$) As String
     Dim Extension
-    Extension = right$(Filename, Len(Filename) - InStrRev(Filename, "."))
+    Extension = Right$(Filename, Len(Filename) - InStrRev(Filename, "."))
     'MsgBox extension
     imgBase64 = "<img src=""data:image/" & Extension & ";base64," & Base64Encode(ReadFile(Filename)) & """ />"
 End Function
@@ -1741,6 +1742,7 @@ Dim ncut As String
 
     
     Set Questions = New CQuestionCollection
+    QuestionsCount = 0
     
 
 
@@ -2352,7 +2354,9 @@ End Function
 Private Function ParseText(Text) As TParseText
 
     Dim TXT As TParseText
+    Dim Separator As String
     
+    Separator = Replace(Format(0, "0.0"), "0", "")
     TXT.Defaultgrade = 1
     TXT.Shuffleanswers = True
     TXT.file = False
@@ -2375,7 +2379,7 @@ Private Function ParseText(Text) As TParseText
     'Поиск веса вопроса
     If InStr(1, Text, "[", vbTextCompare) > 0 And InStr(InStr(1, Text, "[", vbTextCompare) + 1, Text, "]", vbTextCompare) > 0 Then
         If IsNumeric(Mid(Text, InStr(1, Text, "[", vbTextCompare) + 1, InStr(InStr(1, Text, "[", vbTextCompare) + 1, Text, "]", vbTextCompare) - InStr(1, Text, "[", vbTextCompare) - 1)) Then
-            TXT.Defaultgrade = CDbl(Mid(Text, InStr(1, Text, "[", vbTextCompare) + 1, InStr(InStr(1, Text, "[", vbTextCompare) + 1, Text, "]", vbTextCompare) - InStr(1, Text, "[", vbTextCompare) - 1))
+            TXT.Defaultgrade = CDbl(Replace(Mid(Text, InStr(1, Text, "[", vbTextCompare) + 1, InStr(InStr(1, Text, "[", vbTextCompare) + 1, Text, "]", vbTextCompare) - InStr(1, Text, "[", vbTextCompare) - 1), ".", Separator))
             Text = Replace(Text, "[" & Mid(Text, InStr(1, Text, "[", vbTextCompare) + 1, InStr(InStr(1, Text, "[", vbTextCompare) + 1, Text, "]", vbTextCompare) - InStr(1, Text, "[", vbTextCompare) - 1) & "]", "")
             'MsgBox str(TXT.Defaultgrade)
         End If
@@ -2387,7 +2391,7 @@ Private Function ParseText(Text) As TParseText
     If InStr(1, Text, "::", vbTextCompare) = 1 Then
         If InStr(3, Text, "::", vbTextCompare) > 0 Then
             TXT.Name = Mid(Text, 3, InStr(3, Text, "::", vbTextCompare) - 3)
-            Text = Trim(right(Text, Len(Text) - InStr(3, Text, "::", vbTextCompare) - 2))
+            Text = Trim(Right(Text, Len(Text) - InStr(3, Text, "::", vbTextCompare) - 2))
             'MsgBox name + vbCr + text
         End If
     End If
@@ -2395,7 +2399,7 @@ Private Function ParseText(Text) As TParseText
         If InStr(3, Text, "::", vbTextCompare) > 0 Then
             TXT.Name = Mid(Text, 3, InStr(3, Text, "::", vbTextCompare) - 3)
             Text = Replace(Text, "::", "", 2, 1)
-            Text = Trim(right(Text, Len(Text) - 1))
+            Text = Trim(Right(Text, Len(Text) - 1))
             'MsgBox name + vbCr + text
         End If
     End If
@@ -2414,8 +2418,11 @@ End Function
 
 Private Function ParseNumericalAnswer(Text) As TNumericalAnswer
     Dim NumericalAnswer As TNumericalAnswer
+    Dim Separator As String
+
     NumericalAnswer.Tolerance = 0
     NumericalAnswer.Fraction = 100
+    Separator = Replace(Format(0, "0.0"), "0", "")
     
     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1) 'Убираем абзац
     Text = Trim(Text)
@@ -2425,15 +2432,15 @@ Private Function ParseNumericalAnswer(Text) As TNumericalAnswer
     '====Поиск веса ответа====================
     If InStr(1, Text, "=%", vbTextCompare) = 1 And InStr(3, Text, "%", vbTextCompare) > 0 Then
         'MsgBox Mid(text, 3, InStr(3, text, "%", vbTextCompare) - 3)
-        NumericalAnswer.Fraction = CDbl(Mid(Text, 3, InStr(3, Text, "%", vbTextCompare) - 3))
+        NumericalAnswer.Fraction = CDbl(Replace(Mid(Text, 3, InStr(3, Text, "%", vbTextCompare) - 3), ".", Separator))
         If InStr(InStr(3, Text, "%", vbTextCompare) + 1, Text, ":", vbTextCompare) > 0 Then
             'MsgBox Mid(text, InStr(3, text, "%", vbTextCompare) + 1, InStr(InStr(3, text, "%", vbTextCompare) + 1, text, ":", vbTextCompare) - InStr(3, text, "%", vbTextCompare) - 1)
             'MsgBox Right(text, Len(text) - InStr(InStr(3, text, "%", vbTextCompare) + 1, text, ":", vbTextCompare))
             NumericalAnswer.Answer = CVar(Mid(Text, InStr(3, Text, "%", vbTextCompare) + 1, InStr(InStr(3, Text, "%", vbTextCompare) + 1, Text, ":", vbTextCompare) - InStr(3, Text, "%", vbTextCompare) - 1))
-            NumericalAnswer.Tolerance = CDbl(right(Text, Len(Text) - InStr(InStr(3, Text, "%", vbTextCompare) + 1, Text, ":", vbTextCompare)))
+            NumericalAnswer.Tolerance = CDbl(Replace(Right(Text, Len(Text) - InStr(InStr(3, Text, "%", vbTextCompare) + 1, Text, ":", vbTextCompare)), ".", Separator))
         Else
             'MsgBox Right(text, Len(text) - InStr(3, text, "%", vbTextCompare))
-            NumericalAnswer.Answer = CVar(right(Text, Len(Text) - InStr(3, Text, "%", vbTextCompare)))
+            NumericalAnswer.Answer = CVar(Right(Text, Len(Text) - InStr(3, Text, "%", vbTextCompare)))
         End If
     Else
         NumericalAnswer.Answer = CVar(Text)
@@ -2445,8 +2452,11 @@ End Function
 
 Private Function ParseMultichoiceAnswer(Text) As TMultichoiceAnswer
     Dim MultichoiceAnswer As TMultichoiceAnswer
+    Dim Separator As String
+
     MultichoiceAnswer.Fraction = 0
     MultichoiceAnswer.Singleanswer = True
+    Separator = Replace(Format(0, "0.0"), "0", "")
     
     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1) 'Убираем абзац
     Text = Trim(Text)
@@ -2456,16 +2466,16 @@ Private Function ParseMultichoiceAnswer(Text) As TMultichoiceAnswer
     '====Поиск веса ответа====================
     If InStr(1, Text, "~%", vbTextCompare) = 1 And InStr(3, Text, "%", vbTextCompare) > 0 Then
         'MsgBox Mid(text, 3, InStr(3, text, "%", vbTextCompare) - 3)
-        MultichoiceAnswer.Fraction = CDbl(Mid(Text, 3, InStr(3, Text, "%", vbTextCompare) - 3))
+        MultichoiceAnswer.Fraction = CDbl(Replace(Mid(Text, 3, InStr(3, Text, "%", vbTextCompare) - 3), ".", Separator))
         'MsgBox Right(text, Len(text) - InStr(3, text, "%", vbTextCompare))
-        Set MultichoiceAnswer.Answer = GetCHTML(right(Text, Len(Text) - InStr(3, Text, "%", vbTextCompare)))
+        Set MultichoiceAnswer.Answer = GetCHTML(Right(Text, Len(Text) - InStr(3, Text, "%", vbTextCompare)))
         MultichoiceAnswer.Singleanswer = False
     ElseIf InStr(1, Text, "=", vbTextCompare) = 1 Then
-        Set MultichoiceAnswer.Answer = GetCHTML(right(Text, Len(Text) - 1))
+        Set MultichoiceAnswer.Answer = GetCHTML(Right(Text, Len(Text) - 1))
         MultichoiceAnswer.Fraction = 100
         MultichoiceAnswer.Singleanswer = True
     ElseIf InStr(1, Text, "~", vbTextCompare) = 1 Then
-        Set MultichoiceAnswer.Answer = GetCHTML(right(Text, Len(Text) - 1))
+        Set MultichoiceAnswer.Answer = GetCHTML(Right(Text, Len(Text) - 1))
         MultichoiceAnswer.Fraction = 0
         MultichoiceAnswer.Singleanswer = True
     End If
@@ -2478,7 +2488,9 @@ End Function
 
 Private Function ParseShortanswerAnswer(Text) As TShortanswerAnswer
     Dim ShortanswerAnswer As TShortanswerAnswer
+    Dim Separator As String
     ShortanswerAnswer.Fraction = 100
+    Separator = Replace(Format(0, "0.0"), "0", "")
     
     If Len(Text) > 0 Then Text = Left(Text, Len(Text) - 1) 'Убираем абзац
     Text = Trim(Text)
@@ -2489,8 +2501,8 @@ Private Function ParseShortanswerAnswer(Text) As TShortanswerAnswer
     If InStr(1, Text, "%", vbTextCompare) = 1 And InStr(2, Text, "%", vbTextCompare) > 0 Then
         'MsgBox Mid(text, 3, InStr(3, text, "%", vbTextCompare) - 3)
         If IsNumeric(Mid(Text, 2, InStr(2, Text, "%", vbTextCompare) - 2)) Then
-            ShortanswerAnswer.Fraction = CDbl(Mid(Text, 2, InStr(2, Text, "%", vbTextCompare) - 2))
-            ShortanswerAnswer.Text = right(Text, Len(Text) - InStr(2, Text, "%", vbTextCompare))
+            ShortanswerAnswer.Fraction = CDbl(Replace(Mid(Text, 2, InStr(2, Text, "%", vbTextCompare) - 2), ".", Separator))
+            ShortanswerAnswer.Text = Right(Text, Len(Text) - InStr(2, Text, "%", vbTextCompare))
         End If
     Else
         ShortanswerAnswer.Text = Text
