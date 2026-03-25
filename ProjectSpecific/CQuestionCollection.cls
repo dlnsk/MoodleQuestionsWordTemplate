@@ -48,14 +48,11 @@ End Sub
 
 Private Function CreateDOM()
     Dim DOM As MSXML2.DOMDocument60
-    Dim XMLRootElement As MSXML2.IXMLDOMElement
-    Dim XMLElement As MSXML2.IXMLDOMElement
-    Dim XMLAttr As MSXML2.IXMLDOMAttribute
     
     Set DOM = New MSXML2.DOMDocument60
     DOM.preserveWhiteSpace = True
-    Set XMLRootElement = DOM.createElement("quiz")
-    DOM.appendChild XMLRootElement
+    DOM.appendChild DOM.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'")
+    DOM.appendChild DOM.createElement("quiz")
     Set CreateDOM = DOM
 End Function
 
